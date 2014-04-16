@@ -1,5 +1,8 @@
 #pragma once
 
+#include "Player.h"
+#include "Bullet.h"
+
 typedef enum Terms
 {
 	Forward,
@@ -18,6 +21,9 @@ typedef enum NonTerms
 	ifhit,
 	ifinsight
 }NonTerms;
+
+#define TERMS 7
+#define NONTERMS 4
 
 class Pop
 {

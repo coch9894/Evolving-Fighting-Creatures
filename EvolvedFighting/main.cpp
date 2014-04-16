@@ -1,4 +1,4 @@
-#include "Pop.h"
+#pragma once
 
 int main()
 {
