@@ -2,33 +2,31 @@
 
 #include "Player.h"
 #include "Bullet.h"
+#include "node.h"
+#include <fstream>
 
-typedef enum Terms
-{
-	Forward,
-	Left,
-	Right,
-	Shoot,
-	Backward,
-	DoNothing,
-	Aim
-}Terms;
+/*
+enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, iflookingat, last};
 
-typedef enum NonTerms
-{
-	prog2,
-	prog3,
-	ifhit,
-	ifinsight
-}NonTerms;
+enum NODELOC {root, nleft, nmid, nright};
+*/
 
-#define TERMS 7
-#define NONTERMS 4
+#define POP_SIZE 100
+#define DEPTH 3
 
 class Pop
 {
 public:
 	Pop(void);
 	~Pop(void);
+
+	// Players
+	Player player1;
+	Player player2;
+
+	// Population for use with players
+	node* population[POP_SIZE];
+	void write_pop(void);
+	void load_pop(void);
 };
 

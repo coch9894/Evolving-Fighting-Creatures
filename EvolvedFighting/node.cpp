@@ -74,6 +74,7 @@ void node::mutate(){
 			case turn_right:
 			case aim:
 			case move:
+			case shoot:
 				this->type = static_cast <OPTYPE> (rand()%prog3);
 				break;
 			case prog3:

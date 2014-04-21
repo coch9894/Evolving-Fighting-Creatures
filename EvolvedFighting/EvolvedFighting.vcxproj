@@ -64,6 +64,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Bullet.h" />
+    <ClInclude Include="node.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Pop.h" />
     <ClInclude Include="util.h" />
@@ -71,6 +72,7 @@
   <ItemGroup>
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="node.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Pop.cpp" />
   </ItemGroup>

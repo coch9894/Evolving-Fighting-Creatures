@@ -1,7 +1,10 @@
 #pragma once
 #include <iostream>
 
-enum OPTYPE {turn_left, turn_right, move, aim, prog3, prog2, iflookingat, last};
+#define TERMS 5
+#define NONTERMS 3
+
+enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, iflookingat, last};
 
 enum NODELOC {root, nleft, nmid, nright};
 
