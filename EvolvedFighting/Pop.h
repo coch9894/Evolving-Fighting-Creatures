@@ -26,7 +26,10 @@ public:
 
 	// Population for use with players
 	node* population[POP_SIZE];
-	void write_pop(void);
+	//void write_pop(void);
 	void load_pop(void);
+
+	// Fitness
+	void Fitness(void);
 };
 
