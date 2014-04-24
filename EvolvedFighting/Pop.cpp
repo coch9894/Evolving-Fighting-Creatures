@@ -121,6 +121,7 @@ void Pop::load_pop(void)
 	}
 }
 
+/*
 void Pop::write_pop(void)
 {
 	std::ofstream o;
@@ -190,3 +191,4 @@ void Pop::write_pop(void)
 		o << "8\n";
 	}
 }
+*/

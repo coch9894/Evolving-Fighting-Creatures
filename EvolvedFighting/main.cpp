@@ -1,3 +1,4 @@
+#include "Pop.h"
 #include <stdio.h>
 #include <allegro5/allegro.h>
  
@@ -10,13 +11,15 @@ int main(int argc, char **argv)
       return -1;
    }
  
+   Pop* p = new Pop();
+
    display = al_create_display(640, 480);
    if(!display) {
       fprintf(stderr, "failed to create display!\n");
       return -1;
    }
  
-   al_clear_to_color(al_map_rgb(0,0,0));
+   al_clear_to_color(al_map_rgb(1,1,1));
  
    al_flip_display();
  
