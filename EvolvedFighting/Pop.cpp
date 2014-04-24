@@ -5,23 +5,26 @@ Pop::Pop(void)
 {
 }
 
-
 Pop::~Pop(void)
 {
+	for( int i = 0; i < POP_SIZE; i++ )
+	{
+		delete population[i];
+	}
 }
-
-
 
 void Pop::load_pop(void)
 {
 	std::ifstream i;
 	i.open("init.dat");
 
+	/* deletion for later
 	for( int count = 0; count < POP_SIZE; count++ )
 	{
 		delete population[count];
 		population[count] = NULL;
 	}
+	*/
 	
 	for( int count = 0; count < POP_SIZE; count++ )
 	{
@@ -79,42 +82,58 @@ void Pop::load_pop(void)
 
 		population[count] = q.front();
 		population[count]->parent = NULL;
+		population[count]->loc = root;
 		q.pop();
 
 		node * temp = population[count];
 		std::queue<node*> fill;
 		fill.push(temp);
 
-		while( !fill.empty() )
+		while( !fill.empty() && !q.empty() )
 		{
 			temp = fill.front();
 			fill.pop();
 
-			temp->left = q.front();
-			temp->left->parent = temp;
-			q.pop();
-			if( temp->left != NULL )
+			if( !q.empty() )
 			{
+				temp->left = q.front();
+				temp->left->parent = temp;
+				temp->left->loc = nleft;
+				q.pop();
 				fill.push(temp->left);
+			}
+			else
+			{
+				temp->left = NULL;
 			}
 
 			if( temp->type == prog3 )
 			{
-				temp->mid = q.front();
-				temp->mid->parent = temp;
-				q.pop();
-				if( temp->mid != NULL )
+				if( !q.empty() )
 				{
+					temp->mid = q.front();
+					temp->mid->parent = temp;
+					temp->mid->loc = nmid;
+					q.pop();
 					fill.push(temp->mid);
+				}
+				else
+				{
+					temp->mid = NULL;
 				}
 			}
 
-			temp->right = q.front();
-			temp->right->parent = temp;
-			q.pop();
-			if( temp->right != NULL )
+			if( !q.empty() )
 			{
+				temp->right = q.front();
+				temp->right->parent = temp;
+				temp->right->loc = nright;
+				q.pop();
 				fill.push(temp->right);
+			}
+			else
+			{
+				temp->right = NULL;
 			}
 		}
 

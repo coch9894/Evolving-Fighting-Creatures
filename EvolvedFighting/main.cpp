@@ -10,8 +10,6 @@ int main(int argc, char **argv)
       fprintf(stderr, "failed to initialize allegro!\n");
       return -1;
    }
- 
-   Pop* p = new Pop();
 
    display = al_create_display(640, 480);
    if(!display) {
