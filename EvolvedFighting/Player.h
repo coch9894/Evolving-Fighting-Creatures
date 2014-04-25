@@ -2,6 +2,10 @@
 #include "node.h"
 #include "Bullet.h"
 
+enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
+
+#define BASE_ANGLE 15
+
 class Player
 {
 public:
@@ -24,6 +28,8 @@ public:
 
 	int getFitness();	//should get the number of times opposing player got hit
 
+	void Normalize_Fitness(void);
+
 	void DrawPlayer();
 
 	int GetSize() { return root->GetSize(); }
@@ -34,11 +40,17 @@ public:
 	node *root;
 
 private:
+	//maybe public?
+	double fitness;	//normalized fitness only for selecting an elite
+					//very important to keep this straight
+
 	int y_pos;	//in pixels
 	int x_pos;	//in pixels
+	float speed;	//initialized to some constant possible #DEFINE
 
-	float direction; //the angle
+	int direction; //the angle in degrees
 
-	int numHits;	//number of times being hit
+	float numSuccess;	//number of times hitting opponent
+	float numFail;	//number of times being hit
 };
 
