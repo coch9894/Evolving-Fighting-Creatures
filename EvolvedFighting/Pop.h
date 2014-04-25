@@ -17,6 +17,8 @@ enum NODELOC {root, nleft, nmid, nright};
 class Pop
 {
 public:
+	int curIndex;
+	double fitnessPopulation[POP_SIZE];
 	Pop(void);
 	~Pop(void);
 
@@ -28,6 +30,9 @@ public:
 	node* population[POP_SIZE];
 	//void write_pop(void);
 	void load_pop(void);
+
+	Player *GetIndividual(int);
+	void AddIndividual(Player *);
 
 	// Fitness
 	void Fitness(void);

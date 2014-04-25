@@ -26,6 +26,11 @@ public:
 
 	void DrawPlayer();
 
+	int GetSize() { return root->GetSize(); }
+
+	node *GetRoot();
+	void SetRoot(node *);
+
 	node *root;
 
 private:
