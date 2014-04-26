@@ -1,6 +1,5 @@
 #pragma once
 #include "node.h"
-#include "Bullet.h"
 #include <math.h>
 
 #define _USE_MATH_DEFINES
@@ -25,7 +24,8 @@ public:
 
 	void Shoot();	//fires a bullet
 
-	bool IsHit(Bullet *);
+	void GotHit()	{ numFail++; }
+	void Hit()	{ numSuccess++; }
 
 	void Evaluate();
 
@@ -41,6 +41,10 @@ public:
 
 	node *GetRoot();
 	void SetRoot(node *);
+
+	float GetDirection() { return this->direction; }
+	int GetY() { return this->y_pos; }
+	int GetX() { return this->x_pos; }
 
 	node *root;
 

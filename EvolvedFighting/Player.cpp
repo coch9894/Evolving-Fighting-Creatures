@@ -11,7 +11,7 @@ Player::Player(int x, int y )
 {
 	this->x_pos = x;
 	this->y_pos = y;
-	this->direction = 90;	//straight up and down
+	this->direction = -90;	//straight up and down
 	this->fitness = 0;
 	this->numFail = 0;
 	this->numSuccess = 0;

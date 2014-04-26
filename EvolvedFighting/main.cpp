@@ -1,4 +1,5 @@
 #include "Pop.h"
+#include "util.h"
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -12,7 +13,7 @@ int main(int argc, char **argv)
       return -1;
    }
 
-   display = al_create_display(640, 480);
+   display = al_create_display(WINDOW_WIDTH, WINDOW_HEIGHT);
    if(!display) {
       fprintf(stderr, "failed to create display!\n");
       return -1;
@@ -22,9 +23,11 @@ int main(int argc, char **argv)
 
    al_clear_to_color(al_map_rgb(1,1,1));
  
-   Player *p = new Player(320, 240);
+   Player *p = new Player(480, 240);
+   Player *o = new Player(160, 240);
    p->DrawPlayer();
-   Bullet *b = new Bullet();
+   o->DrawPlayer();
+   Bullet *b = new Bullet(p, o);
    b->DrawBullet();
    al_flip_display();
  
