@@ -1,15 +1,20 @@
 #pragma once
 #include "node.h"
 #include "Bullet.h"
+#include <math.h>
 
-enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
+#define _USE_MATH_DEFINES
+
+//enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
 
 #define BASE_ANGLE 15
+#define RADIUS 5
 
 class Player
 {
 public:
 	Player(void);
+	Player(int, int);
 	~Player(void);
 
 	void TurnLeft();	//rotate counter-clockwise
@@ -48,7 +53,7 @@ private:
 	int x_pos;	//in pixels
 	float speed;	//initialized to some constant possible #DEFINE
 
-	int direction; //the angle in degrees
+	float direction; //the angle in degrees
 
 	float numSuccess;	//number of times hitting opponent
 	float numFail;	//number of times being hit

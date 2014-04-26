@@ -1,6 +1,7 @@
 #include "Pop.h"
 #include <stdio.h>
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_primitives.h>
  
 int main(int argc, char **argv)
 {
@@ -17,8 +18,12 @@ int main(int argc, char **argv)
       return -1;
    }
  
+   al_init_primitives_addon();
+
    al_clear_to_color(al_map_rgb(1,1,1));
  
+   Player *p = new Player(320, 240);
+   p->DrawPlayer();
    al_flip_display();
  
    al_rest(10.0);
