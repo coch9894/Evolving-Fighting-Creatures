@@ -24,6 +24,8 @@ int main(int argc, char **argv)
  
    Player *p = new Player(320, 240);
    p->DrawPlayer();
+   Bullet *b = new Bullet();
+   b->DrawBullet();
    al_flip_display();
  
    al_rest(10.0);

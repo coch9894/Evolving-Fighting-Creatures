@@ -8,7 +8,7 @@
 //enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
 
 #define BASE_ANGLE 15
-#define RADIUS 5
+#define RADIUS 8
 
 class Player
 {

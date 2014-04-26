@@ -38,6 +38,6 @@ void Player::Normalize_Fitness(){
 
 void Player::DrawPlayer(){
 	//draw line for direction facing
-	al_draw_line(x_pos, y_pos, x_pos + cos(direction)*10, y_pos + sin(direction)*10, al_map_rgb(0, 255, 0), 2);
+	al_draw_line(x_pos, y_pos, x_pos + cos(direction)*RADIUS*2, y_pos + sin(direction)*RADIUS*2, al_map_rgb(0, 255, 0), 2);
 	al_draw_filled_circle(x_pos, y_pos, RADIUS, al_map_rgb(0, 0, 255));
 }
