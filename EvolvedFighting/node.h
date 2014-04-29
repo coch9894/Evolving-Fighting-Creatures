@@ -2,9 +2,9 @@
 #include <iostream>
 
 #define TERMS 5
-#define NONTERMS 3
+#define NONTERMS 2
 
-enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, iflookingat, last};
+enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
 
 enum NODELOC {root, nleft, nmid, nright};
 

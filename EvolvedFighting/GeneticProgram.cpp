@@ -80,8 +80,8 @@ void GeneticProgram::ComparePopulation(){
 			selectIndiv = selectPop->GetIndividual(i);
 			searchIndiv->Evaluate();
 			selectIndiv->Evaluate();
-			std::cout << "searchPlayer " << i << ":: " << searchIndiv->GetFitness() << "! Fitness array:: " << searchPop->fitnessPopulation[i] << std::endl;
-			std::cout << "selectPlayer " << i << ":: " << selectIndiv->GetFitness() << "! Fitness array:: " << selectPop->fitnessPopulation[i] << std::endl;
+			std::cout << "searchPlayer " << i << ":: " << searchIndiv->getFitness() << "! Fitness array:: " << searchPop->fitnessPopulation[i] << std::endl;
+			std::cout << "selectPlayer " << i << ":: " << selectIndiv->getFitness() << "! Fitness array:: " << selectPop->fitnessPopulation[i] << std::endl;
 			system("PAUSE");
 		}
 	}

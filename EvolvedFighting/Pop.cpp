@@ -70,9 +70,6 @@ void Pop::load_pop(void)
 			case prog2:
 				temp->type = prog2;
 				break;
-			case iflookingat:
-				temp->type = iflookingat;
-				break;
 			}
 
 			q.push(temp);
@@ -140,7 +137,7 @@ void Pop::load_pop(void)
 	}
 }
 
-/*
+
 void Pop::write_pop(void)
 {
 	std::ofstream o;
@@ -200,9 +197,6 @@ void Pop::write_pop(void)
 			case prog2:
 				o << "6\n";
 				break;
-			case iflookingat:
-				o << "7\n";
-				break;
 			}
 		}
 
@@ -210,4 +204,4 @@ void Pop::write_pop(void)
 		o << "8\n";
 	}
 }
-*/
+//*/

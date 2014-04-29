@@ -78,35 +78,13 @@ void node::mutate(){
 				this->type = static_cast <OPTYPE> (rand()%prog3);
 				break;
 			case prog3:
-				typeChance = rand()%2;
-				if(typeChance == 0){
-					type = prog2;
-				}
-				else{
-					type = iflookingat;
-				}
+				type = prog2;
 				this->mid->~node();
 				break;
 			case prog2:
-				typeChance = rand()%2;
-				if(typeChance == 0){
-					type = prog3;
-					this->mid = new node();
-					this->mid->generate(0, this, nmid);
-				}
-				else{
-					type = iflookingat;
-				}
-			case iflookingat:
-				typeChance = rand()%2;
-				if(typeChance == 0){
-					type = prog2;
-				}
-				else{
-					type = prog3;
-					this->mid = new node();
-					this->mid->generate(0, this, nmid);
-				}
+				type = prog3;
+				this->mid = new node();
+				this->mid->generate(0, this, nmid);
 				break;
 		}
 	}
@@ -136,12 +114,6 @@ void node::generate(int depth, node* p, NODELOC l){
 				this->right->generate(depth - 1, this, nright);
 				break;
 			case prog2:
-				this->left = new node();
-				this->left->generate(depth-1, this, nleft);
-				this->right = new node();
-				this->right->generate(depth-1, this, nright);
-				break;
-			case iflookingat:
 				this->left = new node();
 				this->left->generate(depth-1, this, nleft);
 				this->right = new node();
