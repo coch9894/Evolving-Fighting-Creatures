@@ -4,8 +4,8 @@
 
 GeneticProgram::GeneticProgram(void)
 {
-	searchPop = new Pop();
-	selectPop = new Pop();
+	searchTeam1Pop = new Pop();
+	selectTeam1Pop = new Pop();
 	TourneySize = 3;	//subject to change
 	Init();
 }
@@ -16,7 +16,7 @@ GeneticProgram::~GeneticProgram(void)
 }
 
 void GeneticProgram::Init(){
-	//searchPop->FillFitness();
+	searchTeam1Pop->FillFitness();
 }
 
 void GeneticProgram::PrintPopulation(){
@@ -59,6 +59,7 @@ void GeneticProgram::Search(){
 		CopyPopulation(selectPop, searchPop);
 		//searchPop->FillFitness();
 		if(i % 5 == 0){
+			// attack pops
 			//bestIndiv = searchPop->GetBestIndividual();
 			//debugFile << i << " " << searchPop->GetAverageFitness() << " " << bestPlayer->GetFood() << std::endl;
 		}

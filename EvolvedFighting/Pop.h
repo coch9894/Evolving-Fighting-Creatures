@@ -6,7 +6,7 @@
 #include <fstream>
 
 /*
-enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, iflookingat, last};
+enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
 
 enum NODELOC {root, nleft, nmid, nright};
 */
@@ -27,12 +27,16 @@ public:
 	Player player2;
 
 	// Population for use with players
-	node* population[POP_SIZE];
+	Player* population[POP_SIZE];
+
+	void FillFitness();
 	void write_pop(void);
 	void load_pop(void);
 
 	Player *GetIndividual(int);
 	void AddIndividual(Player *);
+
+	void Evaluate(Player *,Player *);
 
 	// Fitness
 	void Fitness(void);

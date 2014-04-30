@@ -41,3 +41,29 @@ void Player::DrawPlayer(){
 	al_draw_line(x_pos, y_pos, x_pos + cos(direction)*RADIUS*2, y_pos + sin(direction)*RADIUS*2, al_map_rgb(0, 255, 0), 2);
 	al_draw_filled_circle(x_pos, y_pos, RADIUS, al_map_rgb(0, 0, 255));
 }
+
+void Player::Evaluate(){
+	
+}
+
+double Player::getFitness(){
+	return this->fitness;
+}
+
+void Player::TurnLeft(){
+	this->direction += BASE_ANGLE;
+}
+
+void Player::TurnRight(){
+	this->direction -= BASE_ANGLE;
+}
+
+void Player::MoveForward(){
+	this->x_pos = cos(this->direction)*speed + 0.5;
+	this->y_pos = sin(this->direction)*speed + 0.5;
+}
+
+void Player::Shoot(Player *o){
+	Bullet *b = new Bullet(this, o);
+	bulletList.push_back(b);
+}

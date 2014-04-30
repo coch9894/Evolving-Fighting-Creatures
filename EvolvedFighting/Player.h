@@ -1,12 +1,15 @@
 #pragma once
 #include "node.h"
+#include "util.h"
+#include "Bullet.h"
+#include <stack>
 #include <math.h>
 
 #define _USE_MATH_DEFINES
 
 //enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
 
-#define BASE_ANGLE 15
+#define BASE_ANGLE 3.14159/2
 #define RADIUS 8
 
 class Player
@@ -22,7 +25,7 @@ public:
 
 	void Aim();	//shoots faster?
 
-	void Shoot();	//fires a bullet
+	void Shoot(Player *);	//fires a bullet
 
 	void GotHit()	{ numFail++; }
 	void Hit()	{ numSuccess++; }
@@ -31,7 +34,7 @@ public:
 
 	int getNumHits();	// number of times this player got hit
 
-	int getFitness();	//should get the number of times opposing player got hit
+	double getFitness();	//should get the number of times opposing player got hit
 
 	void Normalize_Fitness(void);
 
@@ -39,12 +42,20 @@ public:
 
 	int GetSize() { return root->GetSize(); }
 
-	node *GetRoot();
-	void SetRoot(node *);
+	node *GetRoot() { return this->root; }
+	void SetRoot(node *n) { this->root = n; }
 
-	float GetDirection() { return this->direction; }
+	double GetDirection() { return this->direction; }
+	void SetDirection(double a) { this->direction = a; }
+
 	int GetY() { return this->y_pos; }
 	int GetX() { return this->x_pos; }
+
+	void SetY(int y) { this->y_pos = y; }
+	void SetX(int x) { this->x_pos = x; }
+
+	void SetSuccess(int s) { this->numSuccess = s; }
+	void SetFail(int f) { this->numFail = f; }
 
 	node *root;
 
@@ -55,9 +66,9 @@ private:
 
 	int y_pos;	//in pixels
 	int x_pos;	//in pixels
-	float speed;	//initialized to some constant possible #DEFINE
+	double speed;	//initialized to some constant possible #DEFINE
 
-	float direction; //the angle in degrees
+	double direction; //the angle in degrees
 
 	float numSuccess;	//number of times hitting opponent
 	float numFail;	//number of times being hit

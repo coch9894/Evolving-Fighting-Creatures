@@ -6,8 +6,11 @@
 class GeneticProgram
 {
 private:
-	Pop *searchPop;
-	Pop *selectPop;
+	Pop *searchTeam1Pop;
+	Pop *selectTeam1Pop;
+
+	Pop *searchTeam2Pop;
+	Pop *selectTeam2Pop;
 	int TourneySize;
 
 	std::ofstream debugFile;
