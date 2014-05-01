@@ -93,23 +93,13 @@ Jordan Leithart\\
 
 \maketitle
 \begin{abstract}
-This paper provides a sample of a \LaTeX\ document which conforms to
-the formatting guidelines for ACM SIG Proceedings.
-It complements the document \textit{Author's Guide to Preparing
-ACM SIG Proceedings Using \LaTeX$2_\epsilon$\ and Bib\TeX}. This
-source file has been written with the intention of being
-compiled under \LaTeX$2_\epsilon$\ and BibTeX.
 
-The developers have tried to include every imaginable sort
-of ``bells and whistles", such as a subtitle, footnotes on
-title, subtitle and authors, as well as in the text, and
-every optional component (e.g. Acknowledgments, Additional
-Authors, Appendices), not to mention examples of
-equations, theorems, tables and figures.
+An essential part of any genetic program is the use of a well defined fitness function that produces the desired outputs. For competitive co-evolution this does not change however, the ability to view the affects of different fitness functions on two simultaneously evolving populations can be seen through competition. Through competition, the value of a good fitness function will become apparent from the winner of the competition. We propose that it is possible to see the affects of different fitness functions through control of an individuals fitness which then can be normalized to compare to other individuals fitnesses in the population.
 
-To make best use of this sample document, run it through \LaTeX\
-and BibTeX, and compare this source code with the printed
-output produced by the dvi file.
+HOW WE DID IT
+
+RESULTS
+
 \end{abstract}
 
 % A category with the (minimum) three required fields
@@ -121,146 +111,63 @@ output produced by the dvi file.
 
 \keywords{Genetic Programming, Co-Evolution, Competitive Co-Evolution, Evolutionary Computation, Red Queen Effect, Fitness Function} % NOT required for Proceedings
 
-\section{Introduction}
-The \textit{proceedings} are the records of a conference.
-ACM seeks to give these conference by-products a uniform,
-high-quality appearance.  To do this, ACM has some rigid
-requirements for the format of the proceedings documents: there
-is a specified format (balanced  double columns), a specified
-set of fonts (Arial or Helvetica and Times Roman) in
-certain specified sizes (for instance, 9 point for body copy),
-a specified live area (18 $\times$ 23.5 cm [7" $\times$ 9.25"]) centered on
-the page, specified size of margins (1.9 cm [0.75"]) top, (2.54 cm [1"]) bottom
-and (1.9 cm [.75"]) left and right; specified column width
-(8.45 cm [3.33"]) and gutter size (.83 cm [.33"]).
+\section{Introduction} % Include Papers here
 
-The good news is, with only a handful of manual
-settings\footnote{Two of these, the {\texttt{\char'134 numberofauthors}}
-and {\texttt{\char'134 alignauthor}} commands, you have
-already used; another, {\texttt{\char'134 balancecolumns}}, will
-be used in your very last run of \LaTeX\ to ensure
-balanced column heights on the last page.}, the \LaTeX\ document
-class file handles all of this for you.
 
-The remainder of this document is concerned with showing, in
-the context of an ``actual'' document, the \LaTeX\ commands
-specifically available for denoting the structure of a
-proceedings paper, rather than with giving rigorous descriptions
-or explanations of such commands.
 
-\section{The {\secit Body} of The Paper}
-Typically, the body of a paper is organized
-into a hierarchical structure, with numbered or unnumbered
-headings for sections, subsections, sub-subsections, and even
-smaller sections.  The command \texttt{{\char'134}section} that
-precedes this paragraph is part of such a
-hierarchy.\footnote{This is the second footnote.  It
-starts a series of three footnotes that add nothing
-informational, but just give an idea of how footnotes work
-and look. It is a wordy one, just so you see
-how a longish one plays out.} \LaTeX\ handles the numbering
-and placement of these headings for you, when you use
-the appropriate heading commands around the titles
-of the headings.  If you want a sub-subsection or
-smaller part to be unnumbered in your output, simply append an
-asterisk to the command name.  Examples of both
-numbered and unnumbered headings will appear throughout the
-balance of this sample document.
+\section{The Experiment} % BODY
 
-Because the entire article is contained in
-the \textbf{document} environment, you can indicate the
-start of a new paragraph with a blank line in your
-input file; that is why this sentence forms a separate paragraph.
+The simplest way to test our hypothesis was to build a genetic program that could be used in conjuncture with a graphics engine so our end results could be shown and quantified. To do so we built a genetic program that would evolve the instructions for an individual. To evaluate these individuals with different fitness functions it seemed best to use the idea of training two populations on separate fitness functions and then testing them against each other at regular intervals to get a grasp on the validity of each fitness function. After each generation, the best individual from \textit{either} population was saved into a separate population as a control group. When evolution ended, the best individual was tested against this control group to check for the Red Queen Effect. This allowed us to observe if we were creating a overall best solution or if we were cycling through a few strategies.
 
-\subsection{Type Changes and {\subsecit Special} Characters}
-We have already seen several typeface changes in this sample.  You
-can indicate italicized words or phrases in your text with
-the command \texttt{{\char'134}textit}; emboldening with the
-command \texttt{{\char'134}textbf}
-and typewriter-style (for instance, for computer code) with
-\texttt{{\char'134}texttt}.  But remember, you do not
-have to indicate typestyle changes when such changes are
-part of the \textit{structural} elements of your
-article; for instance, the heading of this subsection will
-be in a sans serif\footnote{A third footnote, here.
-Let's make this a rather short one to
-see how it looks.} typeface, but that is handled by the
-document class file. Take care with the use
-of\footnote{A fourth, and last, footnote.}
-the curly braces in typeface changes; they mark
-the beginning and end of
-the text that is to be in the different typeface.
+\subsection{Individuals} % What makes an individual
+Our individuals were made up of common and new behaviours that we needed to model our creatures. The following list of Non-Terminals and Terminals is all we used to make up our individual. Evolution was the key to setting them in the correct order and will be covered in the next section.
+\begin{itemize}
+\item Non-Terminals
+	\begin{itemize}
+	\item Prog2 - When called during evaluation, pushes its left child, then its right child onto the correct player stack.
+	\item Prog3 - When called during evaluation, pushes its left child, middle child, then its right child onto the correct player stack.
+	\end{itemize}
+\item Terminals
+	\begin{itemize}
+	\item Move - When called during evaluation, moves the correct players x position by cos(this->direction)*speed + 0.5 where the direction is where the player is facing. Also moves the correct players y position by sin(this->direction)*speed + 0.5.
+	\item Turn Left - When called during evaluation, computes this->direction += BASE\_ANGLE which changes the direction the player is facing.
+	\item Turn Right - When called during evaluation, computes this->direction -= BASE\_ANGLE which changes the direction the player is facing.
+	\item Aim - When called during evaluation, computes the angle to turn by using the current position of both players and the arc-tangent. In other words, we set the angle to turn to be atan( (y2-y1)/(x2-x1) ).
+	\item Shoot - When called during evaluation, adds a new bullet to the environment list containing environment variables.
+	\end{itemize}
+\end{itemize}
 
-You can use whatever symbols, accented characters, or
-non-English characters you need anywhere in your document;
-you can find a complete list of what is
-available in the \textit{\LaTeX\
-User's Guide}\cite{Lamport:LaTeX}.
+\subsection{Genetic Program} % GP
 
-\subsection{Math Equations}
-You may want to display math equations in three distinct styles:
-inline, numbered or non-numbered display.  Each of
-the three are discussed in the next sections.
+SELECTION
 
-\subsubsection{Inline (In-text) Equations}
-A formula that appears in the running text is called an
-inline or in-text formula.  It is produced by the
-\textbf{math} environment, which can be
-invoked with the usual \texttt{{\char'134}begin. . .{\char'134}end}
-construction or with the short form \texttt{\$. . .\$}. You
-can use any of the symbols and structures,
-from $\alpha$ to $\omega$, available in
-\LaTeX\cite{Lamport:LaTeX}; this section will simply show a
-few examples of in-text equations in context. Notice how
-this equation: \begin{math}\lim_{n\rightarrow \infty}x=0\end{math},
-set here in in-line math style, looks slightly different when
-set in display style.  (See next section).
+CROSSOVER
 
-\subsubsection{Display Equations}
-A numbered display equation -- one set off by vertical space
-from the text and centered horizontally -- is produced
-by the \textbf{equation} environment. An unnumbered display
-equation is produced by the \textbf{displaymath} environment.
+MUTATION
 
-Again, in either environment, you can use any of the symbols
-and structures available in \LaTeX; this section will just
-give a couple of examples of display equations in context.
-First, consider the equation, shown as an inline equation above:
-\begin{equation}\lim_{n\rightarrow \infty}x=0\end{equation}
-Notice how it is formatted somewhat differently in
-the \textbf{displaymath}
-environment.  Now, we'll enter an unnumbered equation:
-\begin{displaymath}\sum_{i=0}^{\infty} x + 1\end{displaymath}
-and follow it with another numbered equation:
-\begin{equation}\sum_{i=0}^{\infty}x_i=\int_{0}^{\pi+2} f\end{equation}
-just to demonstrate \LaTeX's able handling of numbering.
+\subsection{Fitness \& Other Algorithms} % Fitness etc.
 
-\subsection{Citations}
-Citations to articles \cite{bowman:reasoning, clark:pct, braams:babel, herlihy:methodology},
-conference
-proceedings \cite{clark:pct} or books \cite{salas:calculus, Lamport:LaTeX} listed
-in the Bibliography section of your
-article will occur throughout the text of your article.
-You should use BibTeX to automatically produce this bibliography;
-you simply need to insert one of several citation commands with
-a key of the item cited in the proper location in
-the \texttt{.tex} file \cite{Lamport:LaTeX}.
-The key is a short reference you invent to uniquely
-identify each work; in this sample document, the key is
-the first author's surname and a
-word from the title.  This identifying key is included
-with each item in the \texttt{.bib} file for your article.
+To keep the fitnesses simple we decided to keep track the number of times an individual hit the opponent and the number of times that an opponent hit the individual. These were the numbers that our fitness functions would try to control. For example we might want to try and maximize the number of successful hits of the opponent and maximize the number of times the opponent hits the individual. In theory this doesn't sound like that great of a strategy but maybe against some other fitness function it would be great.
 
-The details of the construction of the \texttt{.bib} file
-are beyond the scope of this sample document, but more
-information can be found in the \textit{Author's Guide},
-and exhaustive details in the \textit{\LaTeX\ User's
-Guide}\cite{Lamport:LaTeX}.
+When we would like to compare the different functions however we needed some way to standardize these fitnesses. We came up with what we viewed as a perfect fitness and created a normalizing function to use the two prior values to represent it. Therefore our fitness functions are really controlling methods and strategies for getting the highest normalized fitness. The following is pseudo code for our normalization function:
+\begin{verbatim}
+    if(this->numSuccess == this->numFail)
+    {
+        this->fitness = 1;
+    }
+    else
+    {
+        if(this->numFail == 0){
+            this->numFail += 0.01;
+        }
+        this->fitness = numSuccess/numFail;
+    }
+\end{verbatim}
+Because we decided to use a division of Success/Failures, we had to account for 0 in the denominator. Therefore if the Successes=Failures we just set our "stalemate" value or "average" outcome at 1. Therefore anything over 1 is assumed to be above average during the division. If the denominator is 0 and the numerator is not, we take this as an exceptionally good individual and wish to divide by 0.01 which essentially multiplies our answer by 100.
 
-This article shows only the plainest form
-of the citation command, using \texttt{{\char'134}cite}.
-This is what is stipulated in the SIGS style specifications.
-No other citation format is endorsed.
+\subsubsection{Turning Logic} % Our Turn_Left and Turn_Right Logic
+
+When training or testing to obtain fitness, it is unknown which side of the board the individual will be on or if they will always be on the same side of the board. To compensate for this, when a player is designated to be Player1, a turn\_left action will cause them to rotate their facing direction in a positive direction and a turn\_right action will cause them to rotate their facing direction in a negative direction. However, when a player is designated as Player2, a turn\_left action will cause them to rotate their facing direction in a negative direction and a turn\_right action will cause them to rotate their facing direction in a positive direction. This removes any chance of an individual evolving a strategy for only one side of the board. This will help create a universal strategy.
 
 \subsection{Tables}
 Because tables cannot be split across pages, the best
@@ -433,38 +340,9 @@ use the \texttt{{\char'134}newtheorem} or the
 \texttt{{\char'134}newdef} command,
 respectively, to create it.
 
-\subsection*{A {\secit Caveat} for the \TeX\ Expert}
-Because you have just been given permission to
-use the \texttt{{\char'134}newdef} command to create a
-new form, you might think you can
-use \TeX's \texttt{{\char'134}def} to create a
-new command: \textit{Please refrain from doing this!}
-Remember that your \LaTeX\ source code is primarily intended
-to create camera-ready copy, but may be converted
-to other forms -- e.g. HTML. If you inadvertently omit
-some or all of the \texttt{{\char'134}def}s recompilation will
-be, to say the least, problematic.
+\section{Results} % Results
 
-\section{Conclusions}
-This paragraph will end the body of this sample document.
-Remember that you might still have Acknowledgments or
-Appendices; brief samples of these
-follow.  There is still the Bibliography to deal with; and
-we will make a disclaimer about that here: with the exception
-of the reference to the \LaTeX\ book, the citations in
-this paper are to articles which have nothing to
-do with the present subject and are used as
-examples only.
-%\end{document}  % This is where a 'short' article might terminate
 
-%ACKNOWLEDGMENTS are optional
-\section{Acknowledgments}
-This section is optional; it is a location for you
-to acknowledge grants, funding, editing assistance and
-what have you.  In the present case, for example, the
-authors would like to thank Gerald Murray of ACM for
-his help in codifying this \textit{Author's Guide}
-and the \textbf{.cls} and \textbf{.tex} files that it describes.
 
 %
 % The following two commands are all you need in the

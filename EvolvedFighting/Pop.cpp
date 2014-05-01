@@ -280,7 +280,8 @@ void Pop::Evaluate(Player *one, Player *two){
 						double angle = atan( (y2-y1)/(x2-x1) );
 
 						one->SetDirection(angle);
-
+						
+						numSteps--;
 						break;
 					case turn_left:
 						one->TurnLeft();
@@ -322,6 +323,7 @@ void Pop::Evaluate(Player *one, Player *two){
 
 						two->SetDirection(angle);
 
+						numSteps--;
 						break;
 					// REMEMBER THIS FOR THE PAPER
 					// inverse of player one to ensure stability between evaluations
