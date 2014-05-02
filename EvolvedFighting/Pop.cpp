@@ -325,8 +325,6 @@ void Pop::Evaluate(Player *one, Player *two){
 
 						numSteps--;
 						break;
-					// REMEMBER THIS FOR THE PAPER
-					// inverse of player one to ensure stability between evaluations
 					case turn_left:
 						two->TurnRight();
 						numSteps--;		//num steps from team 2 also
