@@ -30,7 +30,7 @@
 
 \begin{document}
 
-\title{Evolving Fighting Creatures: A Look into Fitness and Competitive Coevolution}
+\title{Evolving Fighting Creatures: A Look into Fitness and Competitive Coevolution\titlenote{The full project lives at https://github.com/coch9894/Evolving-Fighting-Creatures}}
 %
 % You need the command \numberofauthors to handle the 'placement
 % and alignment' of the authors beneath the title.
@@ -94,7 +94,7 @@ Jordan Leithart\\
 \maketitle
 \begin{abstract}
 
-An essential part of any genetic program is the use of a well defined fitness function that produces the desired outputs. For competitive coevolution this does not change however, the ability to view the affects of different fitness functions on two simultaneously evolving populations can be seen through competition. Through competition, the value of a good fitness function will become apparent from the winner of the competition. We propose that it is possible to see the affects of different fitness functions through control of an individuals fitness which then can be normalized to compare to other individuals fitnesses in the population.
+An essential part of any genetic program is the use of a well defined fitness function that produces the desired outputs. For competitive coevolution this does not change, however, the ability to view the affects of different fitness functions on two simultaneously evolving populations can be seen through competition. Through competition, the value of a good fitness function will become apparent from the winner of the competition. We propose that it is possible to see the affects of different fitness functions through control of an individuals fitness which then can be normalized to compare to other individuals fitnesses in the population.
 
 HOW WE DID IT
 
@@ -113,13 +113,15 @@ RESULTS
 
 \section{Introduction} % Include Papers here
 
-STUFF
+Fitness is the driving force of evolutionary computation.\cite{Fitness}
 
 A big part of our project deals with the Red Queen Effect. The Red Queen Effect deals with the idea that a population may be improving some trait, even though their fitness might remain constant\cite[p. 103]{Ebner}. Previous work done by Marc Ebner\cite{Ebner} states that before his work on evolving artificial plants in a single population, the usual setting for the Red Queen Effect was a predator population versus a prey population\cite[p. 104]{Ebner}. Ebner states that ecological interactions are an important part evolution. In Ebner's plant ecosystem, it was common to see a fluctuating fitness around a constant level that sometimes even decreased.
 
 For our experiment, we would like to drop the distinction of predator and prey from the individuals. Instead we would like to look at the strategies of an individual and whether those strategies are effected by the Red Queen Effect. Our creatures who are fighting will only be distinguished by their strategy. This strategy will be developed by the differences in their fitness function. Therefore during evaluation we will compare two individuals at a time. Our engine will allow us to compare any two individuals we want with no bias going to either side.
 
-MORE FROM PAPERS \cite[p. 120]{Ebner}
+What we would like to see is the Red Queen Effect disappear from our project because of our method of training and testing. Our project will go through a set number of rounds. A normal round will have a single population evaluating against other members of that same population. Every 10 rounds however we will evaluate a population against another. This will hopefully change the strategy of both populations and help them improve their fitnesses by keeping their opponents inconsistent.
+
+While Ebner saw a fluctuating fitness around a constant value in his results\cite[p. 120]{Ebner}, we hypothesize that by keeping opponents inconsistent and varying we can see a small yet steady improvement in one populations best fitness. This best fitness is representative of an individual that has been trained to handle similar strategies to his own, but can still beat differing strategies. A final test will to test this individual against a saved set of best individuals from each round. If the best individual can pass a large majority of the tests (greater than 90\%), our hypothesis will be justified. If it cannot pass our hypothesis will have failed.
 
 \section{The Experiment} % BODY
 
@@ -148,6 +150,7 @@ Our individuals were made up of common and new behaviours that we needed to mode
 \begin{table*}
 \centering
 \caption{Evolutionary Characteristics}
+\label{evochar}
 \begin{tabular}{|l|p{4in}|}
 \hline
 Algorithm & \\
@@ -168,7 +171,13 @@ Operator/non-terminal set & \\
 \hline
 Terminal set & \\
 \hline
-Fitness function & \\
+Fitness function 1 & \\
+\hline
+Fitness function 2 & \\
+\hline
+Fitness function 3 & \\
+\hline
+Fitness function 4 & \\
 \hline
 \end{tabular}
 \end{table*}
@@ -199,17 +208,45 @@ When we would like to compare the different functions however we needed some way
 \end{verbatim}
 Because we decided to use a division of Success/Failures, we had to account for 0 in the denominator. Therefore if the Successes=Failures we just set our "stalemate" value or "average" outcome at 1. Therefore anything over 1 is assumed to be above average during the division. If the denominator is 0 and the numerator is not, we take this as an exceptionally good individual and wish to divide by 0.01 which essentially multiplies our answer by 100.
 
+\subsubsection{Fitness Functions}
+
+As seen in Table \ref{evochar}, we will be testing our hypothesis using four different fitness functions. Since the fitness functions are how we will control our strategies we wanted to keep them basic in their functionality. Therefore, we settled on maximizing and minimizing the success and failures. By doing this, we can see if a logical solution like maximizing an individuals hits on an opponent and minimizing an opponents hit on itself, is as good in simulation as we logically would think it would be.
+
 \subsubsection{Turning Logic} % Our Turn_Left and Turn_Right Logic
 
 When training or testing to obtain fitness, it is unknown which side of the board the individual will be on or if they will always be on the same side of the board. To compensate for this, when a player is designated to be Player1, a turn\_left action will cause them to rotate their facing direction in a positive direction and a turn\_right action will cause them to rotate their facing direction in a negative direction. However, when a player is designated as Player2, a turn\_left action will cause them to rotate their facing direction in a negative direction and a turn\_right action will cause them to rotate their facing direction in a positive direction. This removes any chance of an individual evolving a strategy for only one side of the board. This will help create a universal strategy.
 
 \section{Results} % Results
 
+PICTURES
 
+\subsection{Fitness Function 1 VS. Fitness Function 2}
+
+PICTURES
+
+\subsection{Fitness Function 2 VS. Fitness Function 3}
+
+PICTURES
+
+\subsection{Fitness Function 3 VS. Fitness Function 4}
+
+PICTURES
+
+\subsection{Fitness Function 1 VS. Fitness Function 3}
+
+PICTURES
+
+\subsection{Fitness Function 1 VS. Fitness Function 4}
+
+PICTURES
+
+\subsection{Fitness Function 2 VS. Fitness Function 4}
+
+PICTURES
 
 \section{Conclusions} % Conclusions
 
-
+WE DO GOOD
 
 %
 % The following two commands are all you need in the
@@ -231,49 +268,10 @@ When training or testing to obtain fitness, it is unknown which side of the boar
 
 \appendix
 %Appendix A
-\section{Headings in Appendices}
-The rules about hierarchical headings discussed above for
-the body of the article are different in the appendices.
-In the \textbf{appendix} environment, the command
-\textbf{section} is used to
-indicate the start of each Appendix, with alphabetic order
-designation (i.e. the first is A, the second B, etc.) and
-a title (if you include one).  So, if you need
-hierarchical structure
-\textit{within} an Appendix, start with \textbf{subsection} as the
-highest level. Here is an outline of the body of this
-document in Appendix-appropriate form:
-\subsection{Introduction}
-\subsection{The Body of the Paper}
-\subsubsection{Type Changes and  Special Characters}
-\subsubsection{Math Equations}
-\paragraph{Inline (In-text) Equations}
-\paragraph{Display Equations}
-\subsubsection{Citations}
-\subsubsection{Tables}
-\subsubsection{Figures}
-\subsubsection{Theorem-like Constructs}
-\subsubsection*{A Caveat for the \TeX\ Expert}
-\subsection{Conclusions}
-\subsection{Acknowledgments}
-\subsection{Additional Authors}
-This section is inserted by \LaTeX; you do not insert it.
-You just add the names and information in the
-\texttt{{\char'134}additionalauthors} command at the start
-of the document.
-\subsection{References}
-Generated by bibtex from your ~.bib file.  Run latex,
-then bibtex, then latex twice (to resolve references)
-to create the ~.bbl file.  Insert that ~.bbl file into
-the .tex source file and comment out
-the command \texttt{{\char'134}thebibliography}.
-% This next section command marks the start of
-% Appendix B, and does not continue the present hierarchy
-\section{More Help for the Hardy}
-The acm\_proc\_article-sp document class file itself is chock-full of succinct
-and helpful comments.  If you consider yourself a moderately
-experienced to expert user of \LaTeX, you may find reading
-it useful but please remember not to change it.
-\balancecolumns
+\section{Graphics}
+
+Lets show a run every ten rounds?
+
+%\balancecolumns
 % That's all folks!
 \end{document}

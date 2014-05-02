@@ -6,4 +6,11 @@ M.~Ebner.
 \newblock {\em Genetic Programming and Evolvable Machines}, 7(1):103--123,
   2006.
 
+\bibitem{Fitness}
+Y.~Jin, M.~Olhofer, and B.~Sendhoff.
+\newblock A framework for evolutionary optimization with approximate fitness
+  functions.
+\newblock {\em Evolutionary Computation, IEEE Transactions on}, 6(5):481--494,
+  Oct 2002.
+
 \end{thebibliography}
