@@ -1,5 +1,9 @@
-#pragma once
+
+#ifndef _GP_H
+#define _GP_H
+
 #include "Pop.h"
+#include "Bullet.h"
 #include <fstream>
 
 #define NUM_GENERATIONS 250
@@ -11,7 +15,7 @@ private:
 
 	Pop *searchTeam2Pop;
 	Pop *selectTeam2Pop;
-	int TourneySize;
+	int TourneySize;	//test
 
 	std::ofstream debugFile;
 
@@ -26,10 +30,10 @@ public:
 	GeneticProgram(void);
 	~GeneticProgram(void);
 
-	void Select();
+	void Select(Pop *);
 	void Search();
-	int GetBestIndividualIndex();
-	int TourneySelect();
+	int GetBestIndividualIndex(const Pop *);
+	int TourneySelect(const Pop *);
 	void Crossover(Player *, Player *);
 	void Mutate(Player *);
 
@@ -43,5 +47,15 @@ public:
 
 	Player *GetBest();
 
+	void Evaluate(Player *, Player *, bool);
+
+	void DrawEnviron(Player *, Player *);
+
+	void FillFitness(Pop *);
+
+	std::vector <Bullet *> bulletListTeam1;
+	std::vector <Bullet *> bulletListTeam2;
+
 };
 
+#endif

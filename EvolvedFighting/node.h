@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _NODE_H
+#define _NODE_H
 #include <iostream>
 
 #define TERMS 5
@@ -33,3 +34,4 @@ public:
 
 };
 
+#endif

@@ -1,5 +1,6 @@
 #include "Pop.h"
 #include "util.h"
+#include "Bullet.h"
 #include <stdio.h>
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
@@ -27,7 +28,7 @@ int main(int argc, char **argv)
    Player *o = new Player(160, 240);
    p->DrawPlayer();
    o->DrawPlayer();
-   Bullet *b = new Bullet(p, o);
+   Bullet *b = new Bullet(p->GetDirection(), p->GetX(), p->GetY());
    b->DrawBullet();
    al_flip_display();
  

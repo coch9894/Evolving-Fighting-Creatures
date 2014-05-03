@@ -1,23 +1,17 @@
 #include "Bullet.h"
 
+Bullet::Bullet(){
 
-Bullet::Bullet(void)
-{
 }
 
-Bullet::Bullet(Player *p, Player *o)
+Bullet::Bullet(float d, int x, int y)
 {
-	this->parent = p;
-	this->dir = p->GetDirection();
-	this->y_pos = sin(dir)*RADIUS*2 + p->GetY();
-	this->x_pos = cos(dir)*RADIUS*2 + p->GetX();
+	//this->parent = p;
+	this->dir = d;
+	this->y_pos = sin(dir)*RADIUS*2 + y;
+	this->x_pos = cos(dir)*RADIUS*2 + x;
 
 	speed = 10;
-
-
-
-
-	this->opponent = o;
 }
 
 
@@ -30,14 +24,13 @@ void Bullet::DrawBullet(){
 }
 
 //returns true if it collides with the opponent
-bool Bullet::isCollided(){
-	float dx = this->x_pos - opponent->GetX();
-	float dy = this->y_pos - opponent->GetY();
+bool Bullet::isCollided(Player *opp){
+	float dx = this->x_pos - opp->GetX();
+	float dy = this->y_pos - opp->GetY();
 
 	float distance = sqrt(dx*dx + dy*dy);
 	if(distance < RADIUS){
-		opponent->GotHit();
-		parent->Hit();
+		opp->GotHit();
 		return true;
 	}
 
@@ -45,17 +38,19 @@ bool Bullet::isCollided(){
 }
 
 
-//returns true if the bullet is still alive
+//returns 0 if outside of range of board
+//returns 1 if still alive
+//returns 2 if it's a hit
 //calling function will delete bullet if this returns false;
-bool Bullet::Update(){
+int Bullet::Update(Player *opp){
 	this->x_pos += this->x_pos + this->speed*cos(this->dir);
 	this->y_pos += this->y_pos + this->speed*sin(this->dir);
-	if(this->isCollided()){
-		return false;
+	if(this->isCollided(opp)){
+		return 2;
 	}
 	if( this->x_pos > WINDOW_WIDTH || this->x_pos < 0 ||
 		this->y_pos > WINDOW_HEIGHT || this->y_pos < 0 ){
-		return false;
+		return 0;
 	}
-	return true;
+	return 1;
 }

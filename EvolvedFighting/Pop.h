@@ -1,4 +1,6 @@
-#pragma once
+
+#ifndef _POP_H
+#define _POP_H
 
 #include "Player.h"
 #include "Bullet.h"
@@ -18,7 +20,7 @@ class Pop
 {
 public:
 	int curIndex;
-	double fitnessPopulation[POP_SIZE];
+	double fitnessPopulation[POP_SIZE];	//normalized fitness
 	Pop(void);
 	~Pop(void);
 
@@ -42,3 +44,4 @@ public:
 	void Fitness(void);
 };
 
+#endif

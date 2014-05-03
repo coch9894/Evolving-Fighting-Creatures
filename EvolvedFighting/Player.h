@@ -1,16 +1,16 @@
-#pragma once
+#ifndef _PLAYER_H
+#define _PLAYER_H
+
 #include "node.h"
 #include "util.h"
-#include "Bullet.h"
 #include <stack>
-#include <math.h>
 
 #define _USE_MATH_DEFINES
 
 //enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
 
 #define BASE_ANGLE 3.14159/2
-#define RADIUS 8
+
 
 class Player
 {
@@ -25,7 +25,7 @@ public:
 
 	void Aim();	//shoots faster?
 
-	void Shoot(Player *);	//fires a bullet
+	//void Shoot(int);	//fires a bullet
 
 	void GotHit()	{ numFail++; }
 	void Hit()	{ numSuccess++; }
@@ -54,8 +54,10 @@ public:
 	void SetY(int y) { this->y_pos = y; }
 	void SetX(int x) { this->x_pos = x; }
 
-	void SetSuccess(int s) { this->numSuccess = s; }
-	void SetFail(int f) { this->numFail = f; }
+	void SetSuccess(float s) { this->numSuccess = s; }
+	void SetFail(float f) { this->numFail = f; }
+
+	void mutate();
 
 	node *root;
 
@@ -73,4 +75,6 @@ private:
 	float numSuccess;	//number of times hitting opponent
 	float numFail;	//number of times being hit
 };
+
+#endif
 

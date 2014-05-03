@@ -229,7 +229,7 @@ void Pop::FillFitness(){
 
 /*
 *	POSSIBLE GLOBAL FUNCTION
-*/
+*
 void Pop::Evaluate(Player *one, Player *two){
 	int numSteps = 600;
 	//InitBoard();	reset the environ list
@@ -357,3 +357,4 @@ void Pop::Evaluate(Player *one, Player *two){
 	one->Normalize_Fitness();
 	two->Normalize_Fitness();
 }
+*/

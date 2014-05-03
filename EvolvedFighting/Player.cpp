@@ -63,7 +63,16 @@ void Player::MoveForward(){
 	this->y_pos = sin(this->direction)*speed + 0.5;
 }
 
-void Player::Shoot(Player *o){
-	Bullet *b = new Bullet(this, o);
-	bulletList.push_back(b);
+/* @param int player is the player firing the bullet
+void Player::Shoot(int player){
+	Bullet *b = new Bullet(this->direction, this->x_pos, this->y_pos);
+	if(player == 1)
+		bulletListTeam1.push_back(b);
+	else if(player == 2)
+		bulletListTeam2.push_back(b);
+}
+*/
+
+void Player::mutate(){
+	this->root->mutate();
 }
