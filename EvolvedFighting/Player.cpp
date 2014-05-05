@@ -40,6 +40,39 @@ void Player::Normalize_Fitness(){
 	}
 }
 
+void Player::MaxMax()
+{
+	training_fitness = numSuccess * numFail;
+}
+
+void Player::MinMax()
+{
+	if(this->numSuccess == this->numFail){
+		this->fitness = 1;
+	}
+	else{
+		if(this->numSuccess == 0){
+			this->numSuccess += 0.01;
+		}
+		this->fitness = numFail/numSuccess;
+	}
+}
+
+void Player::MinMin()
+{
+	if( numSuccess == 0 )
+		numSuccess += 0.01;
+	if( numFail == 0 )
+		numFail += 0.01;
+	training_fitness = (1/numSuccess) * (1/numFail);
+}
+
+void Player::MaxMin()
+{
+	Normalize_Fitness();
+	training_fitness = fitness;
+}
+
 void Player::DrawPlayer(int side){
 	//draw line for direction facing
 	al_draw_line(x_pos, y_pos, x_pos + cos(direction)*RADIUS*2, y_pos + sin(direction)*RADIUS*2, al_map_rgb(0, 255, 0), 2);

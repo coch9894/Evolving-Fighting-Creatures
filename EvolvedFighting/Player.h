@@ -38,6 +38,10 @@ public:
 	double getFitness();	//should get the number of times opposing player got hit
 
 	void Normalize_Fitness(void);
+	void MaxMax(void);
+	void MinMax(void);
+	void MinMin(void);
+	void MaxMin(void);
 
 	void DrawPlayer(int);
 
@@ -66,6 +70,7 @@ private:
 	//maybe public?
 	double fitness;	//normalized fitness only for selecting an elite
 					//very important to keep this straight
+	double training_fitness;
 
 	int y_pos;	//in pixels
 	int x_pos;	//in pixels

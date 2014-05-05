@@ -28,7 +28,7 @@ int main(int argc, char **argv)
    Pop *p = new Pop();
    GeneticProgram *GP = new GeneticProgram();
    p->load_pop();
-   GP->Evaluate(p->GetIndividual(1), p->GetIndividual(10), false);
+   GP->Evaluate(p->GetIndividual(1), p->GetIndividual(10), true);
 
    system("PAUSE");
    
