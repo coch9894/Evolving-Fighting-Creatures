@@ -14,7 +14,6 @@ enum NODELOC {root, nleft, nmid, nright};
 */
 
 #define POP_SIZE 100
-#define DEPTH 3
 
 class Pop
 {

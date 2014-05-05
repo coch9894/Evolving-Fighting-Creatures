@@ -1,6 +1,19 @@
 #include "node.h"
 
 
+node::node(bool b)
+{
+	this->left = NULL;
+	this->mid = NULL;
+	this->right = NULL;
+	this->parent = NULL;
+	if( b )
+	{
+		this->loc = root;
+		this->type = static_cast <OPTYPE> (rand()%last);
+	}
+}
+
 node::node(void)
 {
 	this->left = NULL;
@@ -10,7 +23,6 @@ node::node(void)
 	this->loc = root;
 	this->type = static_cast <OPTYPE> (rand()%last);
 }
-
 
 node::~node(void)
 {

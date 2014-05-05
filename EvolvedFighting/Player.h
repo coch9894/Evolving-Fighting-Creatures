@@ -9,14 +9,15 @@
 
 //enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
 
-#define BASE_ANGLE 3.14159/2
+#define BASE_ANGLE 3.14159/6
+#define DEPTH 3
 
 
 class Player
 {
 public:
 	Player(void);
-	Player(int, int);
+	Player(bool);
 	~Player(void);
 
 	void TurnLeft();	//rotate counter-clockwise
@@ -38,7 +39,7 @@ public:
 
 	void Normalize_Fitness(void);
 
-	void DrawPlayer();
+	void DrawPlayer(int);
 
 	int GetSize() { return root->GetSize(); }
 

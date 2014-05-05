@@ -45,9 +45,9 @@ void Pop::load_pop(void)
 		while( str[0] != '8' )
 		{
 			node * temp;
-			temp = new node();
+			temp = new node(false);
 
-			switch( str[0] )
+			switch( atoi(str) )
 			{
 			case turn_left:
 				temp->type = turn_left;
@@ -77,7 +77,7 @@ void Pop::load_pop(void)
 			i.getline(str,10);
 		}
 
-		population[count] = new Player();
+		population[count] = new Player(false);
 		population[count]->root = q.front();
 		population[count]->root->parent = NULL;
 		population[count]->root->loc = root;
@@ -98,7 +98,8 @@ void Pop::load_pop(void)
 				temp->left->parent = temp;
 				temp->left->loc = nleft;
 				q.pop();
-				fill.push(temp->left);
+				if( temp->left->type >= prog3 )
+					fill.push(temp->left);
 			}
 			else
 			{
@@ -113,7 +114,8 @@ void Pop::load_pop(void)
 					temp->mid->parent = temp;
 					temp->mid->loc = nmid;
 					q.pop();
-					fill.push(temp->mid);
+					if( temp->mid->type >= prog3 )
+						fill.push(temp->mid);
 				}
 				else
 				{
@@ -127,7 +129,8 @@ void Pop::load_pop(void)
 				temp->right->parent = temp;
 				temp->right->loc = nright;
 				q.pop();
-				fill.push(temp->right);
+				if( temp->right->type >= prog3 )
+					fill.push(temp->right);
 			}
 			else
 			{
@@ -146,8 +149,8 @@ void Pop::write_pop(void)
 	
 	for( int count = 0; count < POP_SIZE; count++ )
 	{
-		population[count] = new Player();
-		population[count]->root->generate(DEPTH,NULL,root);
+		population[count] = new Player(true);
+		//population[count]->root->generate(DEPTH,NULL,root);
 	}
 
 	for( int count = 0; count < POP_SIZE; count++ )

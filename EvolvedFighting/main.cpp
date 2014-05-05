@@ -1,4 +1,5 @@
 #include "Pop.h"
+#include "GeneticProgram.h"
 #include "util.h"
 #include "Bullet.h"
 #include <stdio.h>
@@ -24,6 +25,14 @@ int main(int argc, char **argv)
 
    al_clear_to_color(al_map_rgb(1,1,1));
  
+   Pop *p = new Pop();
+   GeneticProgram *GP = new GeneticProgram();
+   p->load_pop();
+   GP->Evaluate(p->GetIndividual(5), p->GetIndividual(10), true);
+
+   system("PAUSE");
+   
+   /*
    Player *p = new Player(480, 240);
    Player *o = new Player(160, 240);
    p->DrawPlayer();
@@ -31,8 +40,7 @@ int main(int argc, char **argv)
    Bullet *b = new Bullet(p->GetDirection(), p->GetX(), p->GetY());
    b->DrawBullet();
    al_flip_display();
- 
-   al_rest(10.0);
+   */
  
    al_destroy_display(display);
  

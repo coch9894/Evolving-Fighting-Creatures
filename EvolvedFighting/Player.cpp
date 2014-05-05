@@ -2,23 +2,27 @@
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_primitives.h>
 
-
-Player::Player(){
-
-}
-
-Player::Player(int x, int y )
+Player::Player( bool b )
 {
-	this->x_pos = x;
-	this->y_pos = y;
-	this->direction = -90;	//straight up and down
+	this->x_pos = 0;
+	this->y_pos = 0;
+	this->direction = -3.14159/2;	//straight up and down
 	this->fitness = 0;
 	this->numFail = 0;
 	this->numSuccess = 0;
-	this->speed = 5;		//subject to change?
-	this->root = NULL;		//generate the root;
+	this->speed = 1;		//subject to change?
+	if( b )
+	{
+		this->root = new node();
+		this->root->type = prog3;
+		this->root->generate(DEPTH, NULL, (NODELOC)0);
+	}
+	//this->root = NULL;		//generate the root;
 }
 
+Player::Player()
+{
+}
 
 Player::~Player(void)
 {
@@ -36,10 +40,15 @@ void Player::Normalize_Fitness(){
 	}
 }
 
-void Player::DrawPlayer(){
+void Player::DrawPlayer(int side){
 	//draw line for direction facing
 	al_draw_line(x_pos, y_pos, x_pos + cos(direction)*RADIUS*2, y_pos + sin(direction)*RADIUS*2, al_map_rgb(0, 255, 0), 2);
-	al_draw_filled_circle(x_pos, y_pos, RADIUS, al_map_rgb(0, 0, 255));
+	if(side == 1){
+		al_draw_filled_circle(x_pos, y_pos, RADIUS, al_map_rgb(0, 0, 255));
+	}
+	if(side == 2){
+		al_draw_filled_circle(x_pos, y_pos, RADIUS, al_map_rgb(255, 0, 0));
+	}
 }
 
 void Player::Evaluate(){
@@ -61,6 +70,12 @@ void Player::TurnRight(){
 void Player::MoveForward(){
 	this->x_pos = cos(this->direction)*speed + 0.5;
 	this->y_pos = sin(this->direction)*speed + 0.5;
+	if(y_pos > WINDOW_HEIGHT){
+		y_pos = WINDOW_HEIGHT;
+	}
+	if(y_pos < 0){
+		y_pos = 0;
+	}
 }
 
 /* @param int player is the player firing the bullet

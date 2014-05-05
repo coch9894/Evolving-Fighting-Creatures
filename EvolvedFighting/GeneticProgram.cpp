@@ -292,7 +292,7 @@ void GeneticProgram::FillFitness(Pop *pop){
 }
 
 void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
-		int numSteps = 600;
+		int numSteps = 1200;
 	//InitBoard();	reset the environ list
 	one->SetX(WINDOW_WIDTH/4);
 	one->SetY(WINDOW_HEIGHT/2);
@@ -315,7 +315,8 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 	double x2 = 0;
 	double y1 = 0;
 	double y2 = 0;
-	while(numSteps > 0){
+	//while(numSteps > 0){
+	while(1){
 		if(team1stack.empty()){
 			team1 = one->root;
 		}
@@ -359,6 +360,12 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 						break;
 					case move:
 						one->MoveForward();
+						if(one->GetX() > WINDOW_WIDTH/2){
+							one->SetX(WINDOW_WIDTH/2);
+						}
+						if(one->GetX() < 0){
+							one->SetX(0);
+						}
 						numSteps--;
 						break;
 					case shoot:
@@ -402,6 +409,12 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 						break;
 					case move:
 						two->MoveForward();
+						if(two->GetX() > WINDOW_WIDTH){
+							two->SetX(WINDOW_WIDTH);
+						}
+						if(two->GetX() < WINDOW_WIDTH/2){
+							two->SetX(WINDOW_WIDTH/2);
+						}
 						numSteps--;
 						break;
 					case shoot:
@@ -414,30 +427,36 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 
 			//update all the bullets
 			int hit;
-			for(std::vector<Bullet *>::iterator it = bulletListTeam1.begin(); it != bulletListTeam1.end(); ++it){
-				hit = (*it)->Update(two);
-				if( hit == 0){
-					(*it)->~Bullet();
-				}
-				else if(hit == 2){
-					one->Hit();
-					(*it)->~Bullet();
+			if(!bulletListTeam1.empty()){
+				for(std::vector<Bullet *>::iterator it = bulletListTeam1.begin(); it != bulletListTeam1.end(); ++it){
+					hit = (*it)->Update(two);
+					if( hit == 0){
+						(*it)->~Bullet();
+					}
+					else if(hit == 2){
+						one->Hit();
+						(*it)->~Bullet();
+					}
 				}
 			}
 
-			for(std::vector<Bullet *>::iterator it = bulletListTeam2.begin(); it != bulletListTeam2.end(); ++it){
-				hit = (*it)->Update(one);
-				if( hit == 0){
-					(*it)->~Bullet();
-				}
-				else if(hit == 2){
-					one->Hit();
-					(*it)->~Bullet();
+			if(!bulletListTeam2.empty()){
+				for(std::vector<Bullet *>::iterator it = bulletListTeam2.begin(); it != bulletListTeam2.end(); ++it){
+					hit = (*it)->Update(one);
+					if( hit == 0){
+						(*it)->~Bullet();
+					}
+					else if(hit == 2){
+						one->Hit();
+						(*it)->~Bullet();
+					}
 				}
 			}
 
 			if(isDrawn){
 				DrawEnviron(one, two);
+				al_flip_display();
+				system("PAUSE");
 			}
 
 			team1 = team1stack.top();
@@ -453,8 +472,8 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 }
 
 void GeneticProgram::DrawEnviron(Player *one, Player *two){
-	one->DrawPlayer();
-	two->DrawPlayer();
+	one->DrawPlayer(1);
+	two->DrawPlayer(2);
 	for(std::vector<Bullet *>::iterator it = bulletListTeam1.begin(); it != bulletListTeam1.end(); ++it){
 		(*it)->DrawBullet();
 	}

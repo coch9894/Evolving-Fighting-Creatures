@@ -21,6 +21,7 @@ public:
 
 	node *parent;
 
+	node(bool);
 	node(void);
 	~node(void);
 	void generate(int, node*, NODELOC l = root);
