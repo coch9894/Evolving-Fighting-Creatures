@@ -68,8 +68,8 @@ void Player::TurnRight(){
 }
 
 void Player::MoveForward(){
-	this->x_pos = cos(this->direction)*speed + 0.5;
-	this->y_pos = sin(this->direction)*speed + 0.5;
+	this->x_pos += cos(this->direction)*speed + 0.5;
+	this->y_pos += sin(this->direction)*speed + 0.5;
 	if(y_pos > WINDOW_HEIGHT){
 		y_pos = WINDOW_HEIGHT;
 	}

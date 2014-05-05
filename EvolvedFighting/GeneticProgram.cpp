@@ -292,7 +292,7 @@ void GeneticProgram::FillFitness(Pop *pop){
 }
 
 void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
-		int numSteps = 1200;
+		int numSteps = 3000;
 	//InitBoard();	reset the environ list
 	one->SetX(WINDOW_WIDTH/4);
 	one->SetY(WINDOW_HEIGHT/2);
@@ -315,8 +315,29 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 	double x2 = 0;
 	double y1 = 0;
 	double y2 = 0;
-	//while(numSteps > 0){
-	while(1){
+
+
+	// CREATE EVENT TIMER
+	int frames = 0;
+	float gameTime = 0;
+	bool render = false;	//only draw every 60 seconds
+	int gameFPS = 0;
+
+	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	ALLEGRO_TIMER *timer;
+
+	event_queue = al_create_event_queue();
+	timer = al_create_timer(1.0/60);
+
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+
+	al_start_timer(timer);
+	gameTime = al_current_time();
+
+	while(numSteps > 0){
+		ALLEGRO_EVENT ev;
+		al_wait_for_event(event_queue, &ev);
+
 		if(team1stack.empty()){
 			team1 = one->root;
 		}
@@ -327,142 +348,158 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 		team1stack.push(team1);
 		team2stack.push(team2);
 		while(!team1stack.empty() && !team2stack.empty()){
-			if(team1 != NULL){
-				switch(team1->type){
-					case prog3:
-						team1stack.push(team1->right);
-						team1stack.push(team1->mid);
-						team1stack.push(team1->left);
-						break;
-					case prog2:
-						team1stack.push(team1->right);
-						team1stack.push(team1->left);
-						break;
-					case aim:
-						x1 = one->GetX();
-						y1 = one->GetY();
-						x2 = two->GetX();
-						y2 = two->GetY();
+			if(ev.type == ALLEGRO_EVENT_TIMER){
+				render = true;
+				frames++;
 
-						angle = atan( (y2-y1)/(x2-x1) );
+				if(al_current_time() - gameTime >= 1){
+					gameTime = al_current_time();
+					gameFPS = frames;
+					frames = 0;
+				}
+				if(team1 != NULL){
+					switch(team1->type){
+						case prog3:
+							team1stack.push(team1->right);
+							team1stack.push(team1->mid);
+							team1stack.push(team1->left);
+							break;
+						case prog2:
+							team1stack.push(team1->right);
+							team1stack.push(team1->left);
+							break;
+						case aim:
+							x1 = one->GetX();
+							y1 = one->GetY();
+							x2 = two->GetX();
+							y2 = two->GetY();
 
-						one->SetDirection(angle);
+							angle = atan( (y2-y1)/(x2-x1) );
+
+							one->SetDirection(angle);
 						
-						numSteps--;
-						break;
-					case turn_left:
-						one->TurnLeft();
-						numSteps--;
-						break;
-					case turn_right:
-						one->TurnRight();
-						numSteps--;
-						break;
-					case move:
-						one->MoveForward();
-						if(one->GetX() > WINDOW_WIDTH/2){
-							one->SetX(WINDOW_WIDTH/2);
-						}
-						if(one->GetX() < 0){
-							one->SetX(0);
-						}
-						numSteps--;
-						break;
-					case shoot:
-						Bullet *b = new Bullet(one->GetDirection(), one->GetX(), one->GetY());
-						bulletListTeam1.push_back(b);
-						numSteps--;
-						break;
-				}
-			}
-
-			if(team2 != NULL){
-				switch(team2->type){
-					case prog3:
-						team2stack.push(team2->right);
-						team2stack.push(team2->mid);
-						team2stack.push(team2->left);
-						break;
-					case prog2:
-						team2stack.push(team2->right);
-						team2stack.push(team2->left);
-						break;
-					case aim:
-						x1 = two->GetX();
-						y1 = two->GetY();
-						x2 = one->GetX();
-						y2 = one->GetY();
-
-						angle = atan( (y2-y1)/(x2-x1) );
-
-						two->SetDirection(angle);
-
-						numSteps--;
-						break;
-					case turn_left:
-						two->TurnRight();
-						numSteps--;		//num steps from team 2 also
-						break;
-					case turn_right:
-						two->TurnLeft();
-						numSteps--;
-						break;
-					case move:
-						two->MoveForward();
-						if(two->GetX() > WINDOW_WIDTH){
-							two->SetX(WINDOW_WIDTH);
-						}
-						if(two->GetX() < WINDOW_WIDTH/2){
-							two->SetX(WINDOW_WIDTH/2);
-						}
-						numSteps--;
-						break;
-					case shoot:
-						Bullet *b = new Bullet(two->GetDirection(), two->GetX(), two->GetY());
-						bulletListTeam2.push_back(b);
-						numSteps--;
-						break;
-				}
-			}
-
-			//update all the bullets
-			int hit;
-			if(!bulletListTeam1.empty()){
-				for(std::vector<Bullet *>::iterator it = bulletListTeam1.begin(); it != bulletListTeam1.end(); ++it){
-					hit = (*it)->Update(two);
-					if( hit == 0){
-						(*it)->~Bullet();
-					}
-					else if(hit == 2){
-						one->Hit();
-						(*it)->~Bullet();
+							numSteps--;
+							break;
+						case turn_left:
+							one->TurnLeft();
+							numSteps--;
+							break;
+						case turn_right:
+							one->TurnRight();
+							numSteps--;
+							break;
+						case move:
+							one->MoveForward();
+							if(one->GetX() > WINDOW_WIDTH/2){
+								one->SetX(WINDOW_WIDTH/2);
+							}
+							if(one->GetX() < 0){
+								one->SetX(0);
+							}
+							numSteps--;
+							break;
+						case shoot:
+							Bullet *b = new Bullet(one->GetDirection(), one->GetX(), one->GetY());
+							bulletListTeam1.push_back(b);
+							numSteps--;
+							break;
 					}
 				}
-			}
 
-			if(!bulletListTeam2.empty()){
-				for(std::vector<Bullet *>::iterator it = bulletListTeam2.begin(); it != bulletListTeam2.end(); ++it){
-					hit = (*it)->Update(one);
-					if( hit == 0){
-						(*it)->~Bullet();
-					}
-					else if(hit == 2){
-						one->Hit();
-						(*it)->~Bullet();
+				if(team2 != NULL){
+					switch(team2->type){
+						case prog3:
+							team2stack.push(team2->right);
+							team2stack.push(team2->mid);
+							team2stack.push(team2->left);
+							break;
+						case prog2:
+							team2stack.push(team2->right);
+							team2stack.push(team2->left);
+							break;
+						case aim:
+							x1 = two->GetX();
+							y1 = two->GetY();
+							x2 = one->GetX();
+							y2 = one->GetY();
+
+							angle = atan( (y2-y1)/(x2-x1) );
+
+							two->SetDirection(angle);
+
+							numSteps--;
+							break;
+						case turn_left:
+							two->TurnRight();
+							numSteps--;		//num steps from team 2 also
+							break;
+						case turn_right:
+							two->TurnLeft();
+							numSteps--;
+							break;
+						case move:
+							two->MoveForward();
+							if(two->GetX() > WINDOW_WIDTH){
+								two->SetX(WINDOW_WIDTH);
+							}
+							if(two->GetX() < WINDOW_WIDTH/2){
+								two->SetX(WINDOW_WIDTH/2);
+							}
+							numSteps--;
+							break;
+						case shoot:
+							Bullet *b = new Bullet(two->GetDirection(), two->GetX(), two->GetY());
+							bulletListTeam2.push_back(b);
+							numSteps--;
+							break;
 					}
 				}
+
+				//update all the bullets
+				int hit;
+				if(!bulletListTeam1.empty()){
+					for(std::vector<Bullet *>::iterator it = bulletListTeam1.begin(); it != bulletListTeam1.end(); ++it){
+						hit = (*it)->Update(two);
+						if( hit == 0){
+							(*it)->~Bullet();
+						}
+						else if(hit == 2){
+							one->Hit();
+							(*it)->~Bullet();
+						}
+					}
+				}
+
+				if(!bulletListTeam2.empty()){
+					for(std::vector<Bullet *>::iterator it = bulletListTeam2.begin(); it != bulletListTeam2.end(); ++it){
+						hit = (*it)->Update(one);
+						if( hit == 0){
+							(*it)->~Bullet();
+						}
+						else if(hit == 2){
+							two->Hit();
+							(*it)->~Bullet();
+						}
+					}
+				}
+
+				team1 = team1stack.top();
+				team1stack.pop();
+				team2 = team2stack.top();
+				team2stack.pop();
+
 			}
 
-			if(isDrawn){
-				DrawEnviron(one, two);
-				al_flip_display();
-				system("PAUSE");
+			if(render && al_is_event_queue_empty(event_queue)){
+				render = false;
+				//if we're ready to draw... do this
+				if(isDrawn){
+					DrawEnviron(one, two);
+					al_flip_display();
+					al_clear_to_color(al_map_rgb(0, 0, 0));
+					//system("PAUSE");
+				}
 			}
-
-			team1 = team1stack.top();
-			team1stack.pop();
-			team2 = team2stack.top();
-			team2stack.pop();
 		}
 
 

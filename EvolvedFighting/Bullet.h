@@ -24,6 +24,7 @@ public:
 	float dir;
 
 	bool collision;
+	bool isAlive;
 
 	bool isCollided(Player *);	//should be called every update
 	int Update(Player *);
