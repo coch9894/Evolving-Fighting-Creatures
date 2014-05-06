@@ -18,8 +18,10 @@ public:
 
 
 	double speed;
-	int x_pos;	//ints for pixel loc
-	int y_pos;	//ints for pixel loc
+	float x_pos;	//ints for pixel loc
+	float y_pos;	//ints for pixel loc
+	float velX;
+	float velY;
 
 	float dir;
 

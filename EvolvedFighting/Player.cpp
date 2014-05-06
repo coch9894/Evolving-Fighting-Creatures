@@ -106,7 +106,7 @@ void Player::MoveForward(){
 	if(y_pos > WINDOW_HEIGHT){
 		y_pos = WINDOW_HEIGHT;
 	}
-	if(y_pos < 0){
+	else if(y_pos < 0){
 		y_pos = 0;
 	}
 }

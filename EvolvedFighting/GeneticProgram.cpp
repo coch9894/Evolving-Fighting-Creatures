@@ -292,7 +292,7 @@ void GeneticProgram::FillFitness(Pop *pop){
 }
 
 void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
-		int numSteps = 3000;
+		int numSteps = 1200;
 	//InitBoard();	reset the environ list
 	one->SetX(WINDOW_WIDTH/4);
 	one->SetY(WINDOW_HEIGHT/2);
@@ -310,6 +310,10 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 	node *team2 = two->root;
 	std::stack <node *> team1stack;
 	std::stack <node *> team2stack;
+
+	bulletListTeam1.clear();
+	bulletListTeam2.clear();
+
 	double angle = 0;
 	double x1 = 0;
 	double x2 = 0;
@@ -374,6 +378,7 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 							x2 = two->GetX();
 							y2 = two->GetY();
 
+							if(x2 == x1) x2 += 1;
 							angle = atan( (y2-y1)/(x2-x1) );
 
 							one->SetDirection(angle);
@@ -393,7 +398,7 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 							if(one->GetX() > WINDOW_WIDTH/2){
 								one->SetX(WINDOW_WIDTH/2);
 							}
-							if(one->GetX() < 0){
+							else if(one->GetX() < 0){
 								one->SetX(0);
 							}
 							numSteps--;
@@ -401,6 +406,7 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 						case shoot:
 							Bullet *b = new Bullet(one->GetDirection(), one->GetX(), one->GetY());
 							bulletListTeam1.push_back(b);
+
 							numSteps--;
 							break;
 					}
@@ -423,7 +429,9 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 							x2 = one->GetX();
 							y2 = one->GetY();
 
+							if(x2 == x1) x2 += 1;
 							angle = atan( (y2-y1)/(x2-x1) );
+							angle += 3.14159;
 
 							two->SetDirection(angle);
 

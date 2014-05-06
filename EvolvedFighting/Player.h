@@ -60,7 +60,9 @@ public:
 	void SetX(int x) { this->x_pos = x; }
 
 	void SetSuccess(float s) { this->numSuccess = s; }
+	int GetSuccess() { return this->numSuccess; }
 	void SetFail(float f) { this->numFail = f; }
+	int GetFail() { return this->numFail; }
 
 	void mutate();
 

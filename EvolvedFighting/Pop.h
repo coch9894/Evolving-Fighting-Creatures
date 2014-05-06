@@ -13,7 +13,7 @@ enum OPTYPE {turn_left, turn_right, move, aim, shoot, prog3, prog2, last};
 enum NODELOC {root, nleft, nmid, nright};
 */
 
-#define POP_SIZE 100
+#define POP_SIZE 10
 
 class Pop
 {

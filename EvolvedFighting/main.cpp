@@ -28,9 +28,17 @@ int main(int argc, char **argv)
    Pop *p = new Pop();
    GeneticProgram *GP = new GeneticProgram();
    p->load_pop();
-   GP->Evaluate(p->GetIndividual(1), p->GetIndividual(10), true);
+   GP->Evaluate(p->GetIndividual(9), p->GetIndividual(7), true);
 
-   system("PAUSE");
+	al_rest(1);
+	/*for(int i = 0; i < POP_SIZE-1; i++){
+		for(int j = i+1; j < POP_SIZE; j++){
+			GP->Evaluate(p->GetIndividual(i), p->GetIndividual(j), true);
+			std::cout << "Team left " << i << ":: " << p->population[i]->GetSuccess() << "/" << p->population[i]->GetFail()
+					  << " Team right " << j << ":: " << p->population[j]->GetSuccess() << "/" << p->population[j]->GetFail() << std::endl;
+			system("PAUSE");
+		}
+	}*/
    
    /*
    Player *p = new Player(480, 240);
