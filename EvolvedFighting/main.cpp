@@ -8,6 +8,7 @@
  
 int main(int argc, char **argv)
 {
+	srand(time(NULL));
    ALLEGRO_DISPLAY *display = NULL;
  
    if(!al_init()) {
@@ -25,10 +26,9 @@ int main(int argc, char **argv)
 
    al_clear_to_color(al_map_rgb(1,1,1));
  
-   Pop *p = new Pop();
    GeneticProgram *GP = new GeneticProgram();
-   p->load_pop();
-   GP->Evaluate(p->GetIndividual(9), p->GetIndividual(7), true);
+   //GP->Evaluate(p->GetIndividual(9), p->GetIndividual(7), true);
+   GP->Search();
 
 	al_rest(1);
 	/*for(int i = 0; i < POP_SIZE-1; i++){

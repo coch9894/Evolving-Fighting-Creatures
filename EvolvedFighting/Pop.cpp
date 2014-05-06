@@ -3,6 +3,7 @@
 
 Pop::Pop(void)
 {
+	curIndex = 0;
 }
 
 Pop::~Pop(void)
@@ -217,147 +218,21 @@ Player *Pop::GetIndividual(int pIndex){
 void Pop::AddIndividual(Player *i_player){
 	if(curIndex < POP_SIZE){
 		population[curIndex] = i_player;
-		i_player->Evaluate();
-		population[curIndex]->Evaluate();
+		//i_player->Evaluate();
+		//population[curIndex]->Evaluate();
 		curIndex++;
 	}
 }
 
 void Pop::FillFitness(){
 	for(int i = 0; i < POP_SIZE; i++){
-		population[i]->Evaluate();
+		//population[i]->Evaluate();
 	}
 }
-
-
-/*
-*	POSSIBLE GLOBAL FUNCTION
-*
-void Pop::Evaluate(Player *one, Player *two){
-	int numSteps = 600;
-	//InitBoard();	reset the environ list
-	one->SetX(WINDOW_WIDTH/4);
-	one->SetY(WINDOW_HEIGHT/2);
-
-	two->SetX(3*WINDOW_WIDTH/4);
-	two->SetY(WINDOW_HEIGHT/2);
-
-	one->SetSuccess(0);
-	one->SetFail(0);
-	
-	two->SetSuccess(0);
-	two->SetFail(0);
-
-	node *team1 = one->root;
-	node *team2 = two->root;
-	std::stack <node *> team1stack;
-	std::stack <node *> team2stack;
-	while(numSteps > 0){
-		if(team1stack.empty()){
-			team1 = one->root;
-		}
-		if(team2stack.empty()){
-			team2 = two->root;
-		}
-
-		team1stack.push(team1);
-		team2stack.push(team2);
-		while(!team1stack.empty() && !team2stack.empty()){
-			if(team1 != NULL){
-				switch(team1->type){
-					case prog3:
-						team1stack.push(team1->right);
-						team1stack.push(team1->mid);
-						team1stack.push(team1->left);
-						break;
-					case prog2:
-						team1stack.push(team1->right);
-						team1stack.push(team1->left);
-						break;
-					case aim:
-						double x1 = one->GetX();
-						double y1 = one->GetY();
-						double x2 = two->GetX();
-						double y2 = two->GetY();
-
-						double angle = atan( (y2-y1)/(x2-x1) );
-
-						one->SetDirection(angle);
-						
-						numSteps--;
-						break;
-					case turn_left:
-						one->TurnLeft();
-						numSteps--;
-						break;
-					case turn_right:
-						one->TurnRight();
-						numSteps--;
-						break;
-					case move:
-						one->MoveForward();
-						numSteps--;
-						break;
-					case shoot:
-						one->Shoot(two);
-						numSteps--;
-						break;
-				}
-			}
-
-			if(team2 != NULL){
-				switch(team2->type){
-					case prog3:
-						team2stack.push(team2->right);
-						team2stack.push(team2->mid);
-						team2stack.push(team2->left);
-						break;
-					case prog2:
-						team2stack.push(team2->right);
-						team2stack.push(team2->left);
-						break;
-					case aim:
-						double x1 = two->GetX();
-						double y1 = two->GetY();
-						double x2 = one->GetX();
-						double y2 = one->GetY();
-
-						double angle = atan( (y2-y1)/(x2-x1) );
-
-						two->SetDirection(angle);
-
-						numSteps--;
-						break;
-					case turn_left:
-						two->TurnRight();
-						numSteps--;		//num steps from team 2 also
-						break;
-					case turn_right:
-						two->TurnLeft();
-						numSteps--;
-						break;
-					case move:
-						two->MoveForward();
-						numSteps--;
-						break;
-					case shoot:
-						two->Shoot(one);
-						numSteps--;
-						break;
-				}
-			}
-
-			team1 = team1stack.top();
-			team1stack.pop();
-			team2 = team2stack.top();
-			team2stack.pop();
-
-			//DRAW ENVIRONMENT
-		}
-
-
+void Pop::ResetPopulation(){
+	curIndex = 0;
+	for(int i = 0; i < POP_SIZE; i++){
+		population[i] = NULL;
+		delete population[i];
 	}
-	one->Normalize_Fitness();
-	two->Normalize_Fitness();
 }
-*/

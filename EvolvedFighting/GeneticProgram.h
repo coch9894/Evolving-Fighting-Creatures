@@ -30,10 +30,10 @@ public:
 	GeneticProgram(void);
 	~GeneticProgram(void);
 
-	void Select(Pop *);
+	void Select(Pop *, Pop *);
 	void Search();
 	int GetBestIndividualIndex(const Pop *);
-	int TourneySelect(const Pop *);
+	int TourneySelect(Pop *);
 	void Crossover(Player *, Player *);
 	void Mutate(Player *);
 

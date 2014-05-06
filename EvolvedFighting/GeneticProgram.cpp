@@ -6,8 +6,9 @@ GeneticProgram::GeneticProgram(void)
 {
 	searchTeam1Pop = new Pop();
 	selectTeam1Pop = new Pop();
-	TourneySize = 3;	//subject to change
-	Init();
+	searchTeam1Pop->load_pop();
+	TourneySize = 2;	//subject to change
+	//Init();
 }
 
 
@@ -45,9 +46,11 @@ void GeneticProgram::Search(){
 	//std::cout << std::endl;
 
 	for(int i = 0; i < NUM_GENERATIONS; i++){
-		//selectTeam1Pop->ResetPopulation();
+		std::cout << "CURRENT GENERATION IS " << i << std::endl;
+		selectTeam1Pop->ResetPopulation();
 		//selectTeam2Pop->ResetPopulation();
 
+		/*
 		bestIndexTeam1 = GetBestIndividualIndex(searchTeam1Pop);
 		bestIndivTeam1 = searchTeam1Pop->GetIndividual(bestIndexTeam1);
 		bestIndivTeam1->Evaluate();
@@ -55,32 +58,34 @@ void GeneticProgram::Search(){
 		bestIndexTeam2 = GetBestIndividualIndex(searchTeam2Pop);
 		bestIndivTeam2 = searchTeam2Pop->GetIndividual(bestIndexTeam2);
 		bestIndivTeam2->Evaluate();
+		*/
 
 		/*
 		*	ELITISM
-		*/
+		*	skipping it for now
+		*
 		selectTeam1Pop->AddIndividual(bestIndivTeam1);
 		selectTeam1Pop->AddIndividual(bestIndivTeam1);
 
 		selectTeam2Pop->AddIndividual(bestIndivTeam2);
 		selectTeam2Pop->AddIndividual(bestIndivTeam2);
+		*/
 
 		//system("PAUSE");
-		while(searchTeam1Pop->curIndex < POP_SIZE){
-			Select(searchTeam1Pop);
+		while(selectTeam1Pop->curIndex < POP_SIZE){
+			Select(searchTeam1Pop, selectTeam1Pop);
 		}
-
 		/*
 		while(searchTeam2Pop->curIndex < POP_SIZE){
-			Select();
+			Select(searchTeam1Pop, selectTeam1Pop);
 		}
 		*/
 		
 		CopyPopulation(selectTeam1Pop, searchTeam1Pop);
-		CopyPopulation(selectTeam2Pop, searchTeam2Pop);
-		
-		searchTeam1Pop->FillFitness();
-		searchTeam2Pop->FillFitness();
+		//CopyPopulation(selectTeam2Pop, searchTeam2Pop);
+
+		//searchTeam1Pop->FillFitness();
+		//searchTeam2Pop->FillFitness();
 
 
 		if(i % 5 == 0){
@@ -116,22 +121,22 @@ void GeneticProgram::ComparePopulation(){
 	*/
 }
 
-void GeneticProgram::Select(Pop * pop){
-	int firstWinnerIndex = TourneySelect(pop);
-	int secondWinnerIndex = TourneySelect(pop);
+void GeneticProgram::Select(Pop * searchPop, Pop *selectPop){
+	int firstWinnerIndex = TourneySelect(searchPop);
+	int secondWinnerIndex = TourneySelect(searchPop);
 
 	//GetIndividual might be shallow copying and that's why we're getting weird results
 	//write a node copy function
-	Player *firstPlayer = pop->GetIndividual(firstWinnerIndex);
-	Player *secondPlayer = pop->GetIndividual(secondWinnerIndex);
+	Player *firstPlayer = searchPop->GetIndividual(firstWinnerIndex);
+	Player *secondPlayer = searchPop->GetIndividual(secondWinnerIndex);
 
 	Crossover(firstPlayer, secondPlayer);
 
 	Mutate(firstPlayer);
 	Mutate(secondPlayer);
 
-	pop->AddIndividual(firstPlayer);
-	pop->AddIndividual(secondPlayer);
+	selectPop->AddIndividual(firstPlayer);
+	selectPop->AddIndividual(secondPlayer);
 }
 
 int GeneticProgram::GetBestIndividualIndex(const Pop *pop){
@@ -147,18 +152,23 @@ int GeneticProgram::GetBestIndividualIndex(const Pop *pop){
 	return index;
 }
 
-int GeneticProgram::TourneySelect(const Pop *pop){
-	int winningIndex = rand()%POP_SIZE;
-	int tmpIndex;
+int GeneticProgram::TourneySelect(Pop *pop){
+	int oneIndex = rand()%POP_SIZE;
+	int twoIndex = rand()%POP_SIZE;
 
-	for(int i = 0; i < TourneySize; i++){
-		tmpIndex = rand()%POP_SIZE;
-		if(pop->fitnessPopulation[tmpIndex] > pop->fitnessPopulation[winningIndex]){
-			winningIndex = tmpIndex;
-		}
+	while(oneIndex == twoIndex){
+		oneIndex = rand()%POP_SIZE;
 	}
 
-	return winningIndex;
+	Player *one = pop->GetIndividual(oneIndex);
+	Player *two = pop->GetIndividual(twoIndex);
+	std::cout << "Player " << oneIndex << " vs. Player " << twoIndex << std::endl;
+	Evaluate(one, two, true);
+	if(two->getFitness() > one->getFitness()){
+		return twoIndex;
+	}
+
+	return oneIndex;
 }
 
 void GeneticProgram::Crossover(Player *first, Player *second){
@@ -274,6 +284,10 @@ Player * GeneticProgram::CopyIndividual(Player * inputPlayer, Player *outputPlay
 	*/
 	return NULL;
 }
+
+/*
+*	THIS NEEDS TO CREATE A NEW PLAYER EACH TIME
+*/
 
 void GeneticProgram::CopyPopulation(Pop *i_pop, Pop *m_pop){
 	for(int i = 0; i < POP_SIZE; i++){
