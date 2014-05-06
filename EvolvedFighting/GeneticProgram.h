@@ -49,12 +49,9 @@ public:
 
 	void Evaluate(Player *, Player *, bool);
 
-	void DrawEnviron(Player *, Player *);
+	void DrawEnviron(Player *, Player *, std::vector<Bullet *>, std::vector<Bullet *>);
 
 	void FillFitness(Pop *);
-
-	std::vector <Bullet *> bulletListTeam1;
-	std::vector <Bullet *> bulletListTeam2;
 
 };
 

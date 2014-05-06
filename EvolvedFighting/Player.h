@@ -60,13 +60,15 @@ public:
 	void SetX(int x) { this->x_pos = x; }
 
 	void SetSuccess(float s) { this->numSuccess = s; }
-	int GetSuccess() { return this->numSuccess; }
+	float GetSuccess() { return this->numSuccess; }
 	void SetFail(float f) { this->numFail = f; }
-	int GetFail() { return this->numFail; }
+	float GetFail() { return this->numFail; }
 
 	void mutate();
 
 	node *root;
+
+	int totalBullets;
 
 private:
 	//maybe public?

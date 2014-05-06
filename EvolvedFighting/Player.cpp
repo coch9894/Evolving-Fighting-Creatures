@@ -11,6 +11,7 @@ Player::Player( bool b )
 	this->numFail = 0;
 	this->numSuccess = 0;
 	this->speed = 1;		//subject to change?
+	this->totalBullets = 100;	//do we need to limit this?
 	if( b )
 	{
 		this->root = new node();

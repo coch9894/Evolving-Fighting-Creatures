@@ -14,6 +14,7 @@ Bullet::Bullet(float d, int x, int y)
 	speed = 5;
 	this->velX = speed*cos(this->dir);
 	this->velY = speed*sin(this->dir);
+	this->isAlive = true;
 }
 
 
@@ -22,7 +23,9 @@ Bullet::~Bullet(void)
 }
 
 void Bullet::DrawBullet(){
-	al_draw_filled_circle(x_pos, y_pos, 2, al_map_rgb(255, 255, 255));
+	if(this->isAlive){
+		al_draw_filled_circle(x_pos, y_pos, 2, al_map_rgb(255, 255, 255));
+	}
 }
 
 //returns true if it collides with the opponent
