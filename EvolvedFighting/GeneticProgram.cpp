@@ -163,7 +163,7 @@ int GeneticProgram::TourneySelect(Pop *pop){
 	Player *one = pop->GetIndividual(oneIndex);
 	Player *two = pop->GetIndividual(twoIndex);
 	std::cout << "Player " << oneIndex << " vs. Player " << twoIndex << std::endl;
-	Evaluate(one, two, false);
+	Evaluate(one, two, true);
 	if(two->getFitness() > one->getFitness()){
 		return twoIndex;
 	}
@@ -431,7 +431,7 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 							if(one->totalBullets > 0){
 								Bullet *b = new Bullet(one->GetDirection(), one->GetX(), one->GetY());
 								bulletListTeam1.push_back(b);
-								one->totalBullets--;
+								//one->totalBullets--;
 							}
 
 							numSteps--;
@@ -486,7 +486,7 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 							if(two->totalBullets > 0){
 								Bullet *b = new Bullet(two->GetDirection(), two->GetX(), two->GetY());
 								bulletListTeam2.push_back(b);
-								two->totalBullets--;
+								//two->totalBullets--;
 							}
 							numSteps--;
 							break;
@@ -550,6 +550,7 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 	}
 	one->Normalize_Fitness();
 	two->Normalize_Fitness();
+	al_destroy_event_queue(event_queue);
 }
 
 void GeneticProgram::DrawEnviron(Player *one, Player *two, std::vector<Bullet *> v1, std::vector<Bullet *> v2){
