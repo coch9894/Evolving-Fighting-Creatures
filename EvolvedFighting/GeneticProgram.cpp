@@ -550,6 +550,8 @@ void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
 	}
 	one->Normalize_Fitness();
 	two->Normalize_Fitness();
+	bulletListTeam1.clear();
+	bulletListTeam2.clear();
 	al_destroy_event_queue(event_queue);
 }
 

@@ -11,7 +11,7 @@ Bullet::Bullet(float d, int x, int y)
 	this->y_pos = sin(dir)*RADIUS*2 + y;
 	this->x_pos = cos(dir)*RADIUS*2 + x;
 	
-	speed = 5;
+	speed = 2;
 	this->velX = speed*cos(this->dir);
 	this->velY = speed*sin(this->dir);
 	this->isAlive = true;
