@@ -7,6 +7,26 @@ GeneticProgram::GeneticProgram(void)
 	searchTeam1Pop = new Pop();
 	selectTeam1Pop = new Pop();
 	searchTeam1Pop->load_pop();
+
+	BestIndex = 0;
+	TourneySize = 2;	//subject to change
+	//Init();
+}
+
+GeneticProgram::GeneticProgram(int fit1, int fit2)
+{
+	searchTeam1Pop = new Pop();
+	selectTeam1Pop = new Pop();
+	searchTeam1Pop->load_pop();
+
+	searchTeam2Pop = new Pop();
+	selectTeam2Pop = new Pop();
+	searchTeam2Pop->load_pop();
+	this->team1Fitness = fit1;
+	this->team2Fitness = fit2;
+
+	BestIndex = 0;
+
 	TourneySize = 2;	//subject to change
 	//Init();
 }
@@ -32,11 +52,39 @@ void GeneticProgram::PrintFitness(){
 //	saerchPop->OutputFitness();
 }
 
+Player *GeneticProgram::GetElite(Pop *pop, int fit){
+	Player *one;
+	Player *two;
+	for(int i = 0; i < POP_SIZE - 1; i++){
+		one = pop->GetIndividual(i);
+		for(int j = i+1; j < POP_SIZE; j++){
+			two = pop->GetIndividual(j);
+			Evaluate(one, two, false);
+			one->Evaluate_Fitness(fit);
+			two->Evaluate_Fitness(fit);
+			pop->fitnessPopulation[i] += one->GetTrainingFitness();
+			pop->fitnessPopulation[j] += two->GetTrainingFitness();
+		}
+		pop->fitnessPopulation[i] = pop->fitnessPopulation[i]/POP_SIZE;
+	}
+
+	int winningIndex = 0;
+	for(int i = 0; i < POP_SIZE; i++){
+		if(pop->fitnessPopulation[winningIndex] < pop->fitnessPopulation[i]){
+			winningIndex = i;
+		}
+	}
+	return pop->GetIndividual(winningIndex);
+}
+
 void GeneticProgram::Search(){
 	Player *bestIndivTeam1 = NULL;
 	int bestIndexTeam1;
 	Player *bestIndivTeam2 = NULL;
 	int bestIndexTeam2;
+
+	Player *highMan1 = NULL;
+	Player *highMan2 = NULL;
 
 	
 	//debugFile.open("debug.txt");
@@ -47,51 +95,70 @@ void GeneticProgram::Search(){
 
 	for(int i = 0; i < NUM_GENERATIONS; i++){
 		std::cout << "CURRENT GENERATION IS " << i << std::endl;
+		searchTeam1Pop->ResetFitness();
 		selectTeam1Pop->ResetPopulation();
-		//selectTeam2Pop->ResetPopulation();
 
-		/*
-		bestIndexTeam1 = GetBestIndividualIndex(searchTeam1Pop);
-		bestIndivTeam1 = searchTeam1Pop->GetIndividual(bestIndexTeam1);
-		bestIndivTeam1->Evaluate();
+		searchTeam2Pop->ResetFitness();
+		selectTeam2Pop->ResetPopulation();
 
-		bestIndexTeam2 = GetBestIndividualIndex(searchTeam2Pop);
-		bestIndivTeam2 = searchTeam2Pop->GetIndividual(bestIndexTeam2);
-		bestIndivTeam2->Evaluate();
-		*/
+		if(highMan1 == NULL){
+			bestIndivTeam1 = GetElite(searchTeam1Pop, team1Fitness);
+		}
+		else{
+			bestIndivTeam1 = highMan1;
+		}
+		if(highMan2 == NULL){
+			bestIndivTeam2 = GetElite(searchTeam2Pop, team2Fitness);
+		}
+		else{
+			bestIndivTeam2 = highMan2;
+		}
 
 		/*
 		*	ELITISM
-		*	skipping it for now
-		*
-		selectTeam1Pop->AddIndividual(bestIndivTeam1);
-		selectTeam1Pop->AddIndividual(bestIndivTeam1);
-
-		selectTeam2Pop->AddIndividual(bestIndivTeam2);
-		selectTeam2Pop->AddIndividual(bestIndivTeam2);
 		*/
-
+		selectTeam1Pop->AddIndividual(bestIndivTeam1);
+		selectTeam2Pop->AddIndividual(bestIndivTeam2);
+		std::cout << "Team 1 SELECT " << std::endl;
 		//system("PAUSE");
 		while(selectTeam1Pop->curIndex < POP_SIZE){
 			Select(searchTeam1Pop, selectTeam1Pop);
 		}
-		/*
-		while(searchTeam2Pop->curIndex < POP_SIZE){
-			Select(searchTeam1Pop, selectTeam1Pop);
+		std::cout << "Team 2 SELECT " << std::endl;
+		//system("PAUSE");
+		while(selectTeam2Pop->curIndex < POP_SIZE){
+			std::cout << selectTeam2Pop->curIndex << std::endl;
+			Select(searchTeam2Pop, selectTeam2Pop);
 		}
-		*/
 		
 		CopyPopulation(selectTeam1Pop, searchTeam1Pop);
-		//CopyPopulation(selectTeam2Pop, searchTeam2Pop);
+		CopyPopulation(selectTeam2Pop, searchTeam2Pop);
 
 		//searchTeam1Pop->FillFitness();
 		//searchTeam2Pop->FillFitness();
 
 
 		if(i % 5 == 0){
+			highMan1 = GetElite(searchTeam1Pop, team1Fitness);
+			highMan2 = GetElite(searchTeam2Pop, team2Fitness);
+			Evaluate(highMan1, highMan2, true);
+			if(highMan1->getFitness() < highMan2->getFitness()){
+				highMan2->Team = this->team2Fitness;
+				BestPop[BestIndex] = highMan2;
+				BestIndex++;
+			}
+			else{
+				highMan1->Team = this->team1Fitness;
+				BestPop[BestIndex] = highMan2;
+				BestIndex++;
+			}
 			// attack pops
 			//bestIndiv = searchPop->GetBestIndividual();
 			//debugFile << i << " " << searchPop->GetAverageFitness() << " " << bestPlayer->GetFood() << std::endl;
+		}
+		else{
+			highMan1 = NULL;
+			highMan2 = NULL;
 		}
 		
 	}
@@ -162,8 +229,7 @@ int GeneticProgram::TourneySelect(Pop *pop){
 
 	Player *one = pop->GetIndividual(oneIndex);
 	Player *two = pop->GetIndividual(twoIndex);
-	std::cout << "Player " << oneIndex << " vs. Player " << twoIndex << std::endl;
-	Evaluate(one, two, true);
+	Evaluate(one, two, false);
 	if(two->getFitness() > one->getFitness()){
 		return twoIndex;
 	}
@@ -316,7 +382,7 @@ void GeneticProgram::FillFitness(Pop *pop){
 }
 
 void GeneticProgram::Evaluate(Player *one, Player *two, bool isDrawn = false){
-		int numSteps = 1200;
+		int numSteps = 600;
 	//InitBoard();	reset the environ list
 	one->SetX(WINDOW_WIDTH/4);
 	one->SetY(WINDOW_HEIGHT/2);

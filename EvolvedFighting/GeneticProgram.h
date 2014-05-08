@@ -6,7 +6,8 @@
 #include "Bullet.h"
 #include <fstream>
 
-#define NUM_GENERATIONS 250
+#define NUM_GENERATIONS 100
+#define ELITE_SIZE NUM_GENERATIONS/5
 class GeneticProgram
 {
 private:
@@ -15,7 +16,10 @@ private:
 
 	Pop *searchTeam2Pop;
 	Pop *selectTeam2Pop;
+
 	int TourneySize;	//test
+	int team1Fitness;	//which fitness are we using?
+	int team2Fitness;	//which fitness are we using?
 
 	std::ofstream debugFile;
 
@@ -28,6 +32,7 @@ public:
 	void Init();
 
 	GeneticProgram(void);
+	GeneticProgram(int, int);
 	~GeneticProgram(void);
 
 	void Select(Pop *, Pop *);
@@ -52,6 +57,11 @@ public:
 	void DrawEnviron(Player *, Player *, std::vector<Bullet *>, std::vector<Bullet *>);
 
 	void FillFitness(Pop *);
+
+	Player *GetElite(Pop *, int);
+
+	Player *BestPop[ELITE_SIZE];
+	int BestIndex;
 
 };
 

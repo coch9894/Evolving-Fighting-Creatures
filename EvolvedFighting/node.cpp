@@ -80,7 +80,7 @@ node * node::copyTree(node *old, node *p){
 void node::mutate(){
 	int mutateChance = rand()%100;
 	int typeChance = 0;
-	if(mutateChance < 5){
+	if(mutateChance < 10){
 		switch(this->type){
 			case turn_left:
 			case turn_right:

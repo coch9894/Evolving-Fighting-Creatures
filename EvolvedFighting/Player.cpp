@@ -29,6 +29,23 @@ Player::~Player(void)
 {
 }
 
+void Player::Evaluate_Fitness(int fit){
+	switch(fit){
+		case 0:	//MAX MAX
+			this->MaxMax();
+			break;
+		case 1: //MIN MAX
+			this->MinMax();
+			break;
+		case 2:	//MIN MIN
+			this->MinMin();
+			break;
+		case 3:	//MAX MIN
+			this->MaxMin();
+			break;
+	}
+}
+
 void Player::Normalize_Fitness(){
 	if(this->numSuccess == this->numFail){
 		this->fitness = 1;

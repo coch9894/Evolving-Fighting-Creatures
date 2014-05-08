@@ -38,6 +38,7 @@ public:
 	double getFitness();	//should get the number of times opposing player got hit
 
 	void Normalize_Fitness(void);
+	void Evaluate_Fitness(int);
 	void MaxMax(void);
 	void MinMax(void);
 	void MinMin(void);
@@ -64,11 +65,14 @@ public:
 	void SetFail(float f) { this->numFail = f; }
 	float GetFail() { return this->numFail; }
 
+	double GetTrainingFitness() { return this->training_fitness; }
+
 	void mutate();
 
 	node *root;
 
 	int totalBullets;
+	int Team;
 
 private:
 	//maybe public?

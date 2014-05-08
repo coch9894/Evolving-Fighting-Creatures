@@ -140,6 +140,7 @@ void Pop::load_pop(void)
 		}
 
 	}
+	i.close();
 }
 
 
@@ -229,10 +230,18 @@ void Pop::FillFitness(){
 		//population[i]->Evaluate();
 	}
 }
+
+void Pop::ResetFitness(){
+	for(int i = 0; i < POP_SIZE; i++){
+		fitnessPopulation[i] = 0;
+	}
+}
+
 void Pop::ResetPopulation(){
 	curIndex = 0;
 	for(int i = 0; i < POP_SIZE; i++){
 		population[i] = NULL;
 		delete population[i];
 	}
+	ResetFitness();
 }
