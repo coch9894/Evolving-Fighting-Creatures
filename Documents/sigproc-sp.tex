@@ -155,40 +155,94 @@ Our individuals were made up of common and new behaviours that we needed to mode
 \label{evochar}
 \begin{tabular}{|l|p{4in}|}
 \hline
-Algorithm & \\
+Algorithm & Generational\\
 \hline
-Population size & \\
+Population size & 15 Players\\
 \hline
-Selection method & \\
+Selection method & Tournament Select (tournament size was 2)\\
 \hline
-Elitism & \\
+Elitism & Yes, the best individual per generation was copied over\\
 \hline
-Crossover method & \\
+Crossover method & Subtree crossover\\
 \hline
-Crossover rate & \\
+Crossover rate & We took a random integer whose range was the size of each parent, then traversed the tree in a depth-first method. When I had visited the number of nodes equal to that random integer We crossed over on that node.\\
 \hline
-Mutation method & \\
+Mutation method & Node mutation; 10\% chance that each node in each individual would be mutated\\
 \hline
-Operator/non-terminal set & \\
+Operator/non-terminal set & \{prog3, prog2\}\\
 \hline
-Terminal set & \\
+Terminal set & \{rotate left, rotate right, aim, move forward, shoot\}\\
 \hline
-Fitness function 1 & \\
+Fitness function 1 & MaxMax; The goal of this training fitness was to maximize the number of times the opponent was hit by the player's bullets, and to maximize the number of times the player was hit. \\
 \hline
-Fitness function 2 & \\
+Fitness function 2 & MinMax; The goal of this training fitness was to minimize the number of times the opponent was hit by the player's bullets, and to maximize the number of times the player was hit. \\
 \hline
-Fitness function 3 & \\
+Fitness function 3 & MinMin; The goal of this training fitness was to minimize the number of times the opponent was hit by the player's bullets, and to minimize the number of times the player was hit. \\
 \hline
-Fitness function 4 & \\
+Fitness function 4 & MaxMin; The goal of this training fitness was to maximize the number of times the opponent was hit by the player's bullets, and to minimize the number of times the player was hit. \\
 \hline
 \end{tabular}
 \end{table*}
 
-SELECTION
+\subsection{Selection}
+\subsection{Elitism}
+To maintain the best players across generations, we decided to create an elite for each generation. This elite was pitted against every other player in the population to ensure that it was indeed the best player. Each elite was chosen based on the training fitness assigned to that specific search, see Table \ref{evochar}. This particular area of our program was where most of the time was spent. We had to check each player against every other player which added up computational power quickly. Once we had gathered all the fitness, we averaged it out and returned the better player The following is pseudo code for our get elite function:
+\begin{verbatim}
+  Player *one;
+  Player *two;
+  for(int i = 0; i < POP_SIZE - 1; i++){
+    one = pop->GetIndividual(i);
+    for(int j = i+1; j < POP_SIZE; j++){
+      two = pop->GetIndividual(j);
+      Evaluate(one, two, false);
+      pop->fitnessPopulation[i] += one->GetTrainingFitness();
+      pop->fitnessPopulation[j] += two->GetTrainingFitness();
+    }
+    pop->fitnessPopulation[i] = pop->fitnessPopulation[i]/POP_SIZE;
+  }
+  pop->fitnessPopulation[POP_SIZE] = pop->fitnessPopulation[POP_SIZE]/POP_SIZE;
+  int winningIndex = 0;
+  for(int i = 0; i < POP_SIZE; i++){
+    if(pop->fitnessPopulation[winningIndex] < pop->fitnessPopulation[i]){
+      winningIndex = i;
+    }
+  }
+  return pop->GetIndividual(winningIndex);
+\end{verbatim}
 
-CROSSOVER
+\subsection{Tournament Select}
+The tournament select function grabbed two random players. Then, it evaluated the two players against each other. We specifically made it so that the players could not be the same player. The tournament select then compared their fitness (based on the training fitness used for that specific genetic program), and selected whichever one was better. The following is pseudo code for our tournament select function:
+\begin{verbatim}
+  int oneIndex = rand()%POP_SIZE;
+  int twoIndex = rand()%POP_SIZE;
 
-MUTATION
+  while(oneIndex == twoIndex){
+    oneIndex = rand()%POP_SIZE;
+  }
+
+  Player *one = pop->GetIndividual(oneIndex);
+  Player *two = pop->GetIndividual(twoIndex);
+  Evaluate(one, two, false);
+  if(two->GetTrainingFitness() > one->GetTrainingFitness()){
+    return twoIndex;
+  }
+
+  return oneIndex;
+\end{verbatim}
+
+\subsection{Crossover}
+The crossover function took the two winners of the above tournament select and crossed over at a random number, see Table \ref{evochar}. This algorithm performed a depth-first traversal through the player tree. Once it arrived at the random node, it crossed over with the second player. The actual crossover algorithm required a deep copy of the subtree to be made and then attached. We used a temporary tree to hold that subtree and then attached it by setting the parent node equal to the tmpParent's node. Here is some pseudo code to explain this:
+\begin{verbatim}
+  node *tmpNode = firstNode->copyTree(firstNode, firstNode->parent);
+  firstNode = firstNode->copyTree(secondNode, firstNode->parent);
+  secondNode = secondNode->copyTree(tmpNode, secondNode->parent);
+\end{verbatim}
+
+\subsection{Mutation}
+The mutation function traversed the player tree in a depth-first traversal. At every node, a random number between 1 and 100 was generated. If the number was less than 10, the current node was mutated. To make sure that the node didn't change types (terminal to non-terminal and visa versa), if the node was a terminal a random terminal node was generated. Because we only had two non-terminals in our set, see Table \ref{evochar}, we just switched prog3 over to prog2 and visa versa.
+
+\subsection{Evaluate}
+The evaluate function was the meat of our genetic program. It took in two separate players and pitted them against each other, counting up the number of times each player was hit. Because our player tree (which had all of our actions in it), was in a separate class from the player class, we had to create a depth-first traversal without using recursion. To do this effectively, we had to use a stack data structure. By pushing right to left, and then popping the top off we were able to simulate a recursive depth-first traversal. In the interest of time, we gave each player only 300 actions. This number would be decreased every time an action was performed to ensure that only 300 actions were taken.
 
 \subsection{Fitness \& Other Algorithms} % Fitness etc.
 
