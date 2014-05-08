@@ -67,7 +67,7 @@ Player *GeneticProgram::GetElite(Pop *pop, int fit){
 		}
 		pop->fitnessPopulation[i] = pop->fitnessPopulation[i]/POP_SIZE;
 	}
-
+	pop->fitnessPopulation[POP_SIZE] = pop->fitnessPopulation[POP_SIZE]/POP_SIZE;
 	int winningIndex = 0;
 	for(int i = 0; i < POP_SIZE; i++){
 		if(pop->fitnessPopulation[winningIndex] < pop->fitnessPopulation[i]){
@@ -122,13 +122,13 @@ void GeneticProgram::Search(){
 		std::cout << "Team 1 SELECT " << std::endl;
 		//system("PAUSE");
 		while(selectTeam1Pop->curIndex < POP_SIZE){
-			Select(searchTeam1Pop, selectTeam1Pop);
+			Select(searchTeam1Pop, selectTeam1Pop, team1Fitness);
 		}
 		std::cout << "Team 2 SELECT " << std::endl;
 		//system("PAUSE");
 		while(selectTeam2Pop->curIndex < POP_SIZE){
 			std::cout << selectTeam2Pop->curIndex << std::endl;
-			Select(searchTeam2Pop, selectTeam2Pop);
+			Select(searchTeam2Pop, selectTeam2Pop, team2Fitness);
 		}
 		
 		CopyPopulation(selectTeam1Pop, searchTeam1Pop);
@@ -188,12 +188,10 @@ void GeneticProgram::ComparePopulation(){
 	*/
 }
 
-void GeneticProgram::Select(Pop * searchPop, Pop *selectPop){
-	int firstWinnerIndex = TourneySelect(searchPop);
-	int secondWinnerIndex = TourneySelect(searchPop);
+void GeneticProgram::Select(Pop * searchPop, Pop *selectPop, int teamfit){
+	int firstWinnerIndex = TourneySelect(searchPop, teamfit);
+	int secondWinnerIndex = TourneySelect(searchPop, teamfit);
 
-	//GetIndividual might be shallow copying and that's why we're getting weird results
-	//write a node copy function
 	Player *firstPlayer = searchPop->GetIndividual(firstWinnerIndex);
 	Player *secondPlayer = searchPop->GetIndividual(secondWinnerIndex);
 
@@ -219,7 +217,7 @@ int GeneticProgram::GetBestIndividualIndex(const Pop *pop){
 	return index;
 }
 
-int GeneticProgram::TourneySelect(Pop *pop){
+int GeneticProgram::TourneySelect(Pop *pop, int fit){
 	int oneIndex = rand()%POP_SIZE;
 	int twoIndex = rand()%POP_SIZE;
 
@@ -230,7 +228,9 @@ int GeneticProgram::TourneySelect(Pop *pop){
 	Player *one = pop->GetIndividual(oneIndex);
 	Player *two = pop->GetIndividual(twoIndex);
 	Evaluate(one, two, false);
-	if(two->getFitness() > one->getFitness()){
+	one->Evaluate_Fitness(fit);
+	two->Evaluate_Fitness(fit);
+	if(two->GetTrainingFitness() > one->GetTrainingFitness()){
 		return twoIndex;
 	}
 
