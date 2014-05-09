@@ -6,6 +6,10 @@ M.~Ebner.
 \newblock {\em Genetic Programming and Evolvable Machines}, 7(1):103--123,
   2006.
 
+\bibitem{Red}
+D.~Floreano and S.~Nolfi.
+\newblock God save the red queen! competition in co-evolutionary robotics.
+
 \bibitem{Fitness}
 Y.~Jin, M.~Olhofer, and B.~Sendhoff.
 \newblock A framework for evolutionary optimization with approximate fitness

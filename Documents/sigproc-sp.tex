@@ -28,6 +28,12 @@
 
 \documentclass{acm_proc_article-sp}
 
+\usepackage{listings}
+\lstset{breaklines=true}
+\lstset{numbers=left, numberstyle=\scriptsize\ttfamily, numbersep=10pt, captionpos=b} 
+\lstset{basicstyle=\small\ttfamily}
+\lstset{framesep=4pt}
+
 \begin{document}
 
 \title{Evolving Fighting Creatures: A Look into Fitness and Competitive Coevolution\titlenote{The full project lives at https://github.com/coch9894/Evolving-Fighting-Creatures}}
@@ -94,9 +100,7 @@ Jordan Leithart\\
 \maketitle
 \begin{abstract}
 
-An essential part of any genetic program is the use of a well defined fitness function that produces the desired outputs. For competitive coevolution this does not change, however, the ability to view the affects of different fitness functions on two simultaneously evolving populations can be seen through competition. Through competition, the value of a good fitness function will become apparent from the winner of the competition. We propose that it is possible to see the affects of different fitness functions through control of an individuals fitness which then can be normalized to compare to other individuals fitnesses in the population.
-
-HOW WE DID IT
+An essential part of any genetic program is the use of a well defined fitness function that produces the desired outputs. For competitive coevolution this does not change. However, the ability to view the affects of different fitness functions on two simultaneously evolving populations can be seen through competition. Through competition, the value of a good fitness function will become apparent from the winner of the competition. We propose that it is possible to see the affects of different fitness functions through control of an individuals fitness which then can be normalized to compare to other individuals fitnesses in the population. We would like to see if logical fitness functions are always the best at producing good results and if training and testing have any affect on the appearance of the red queen effect.
 
 RESULTS
 
@@ -115,13 +119,15 @@ RESULTS
 
 Fitness is the driving force of evolutionary computation. Unfortunately, they are also the most computationally expensive process within evolutionary computation. To solve this problem approximate models were created that were computationally efficient\cite{Fitness}. What we want to look at for our experiment is the effectiveness of fitness functions and their ability to perform against each other. Relating this to approximate models of fitness, which are usually assumed to be correct\cite{Fitness}, we can see that the method for an approximate model will only be correct when the approximate model itself is globally correct. For our experiment we want to see if their is a correlation between logically correct strategies and winning competitions. Our fitness functions will differ in the way they value different aspects of an individual. To compare them however we had a need to create a normalizing function. More on these methods will be covered later. 
 
-A big part of our project deals with the Red Queen Effect. The Red Queen Effect deals with the idea that a population may be improving some trait, even though their fitness might remain constant\cite{Ebner}. Previous work done by Marc Ebner\cite{Ebner} states that before his work on evolving artificial plants in a single population, the usual setting for the Red Queen Effect was a predator population versus a prey population\cite{Ebner}. Ebner states that ecological interactions are an important part evolution. In Ebner's plant ecosystem, it was common to see a fluctuating fitness around a constant level that sometimes even decreased.
+A big part of our project deals with the Red Queen Effect. The Red Queen Effect deals with the idea that a population may be improving some trait, even though their fitness might remain constant\cite{Ebner}. Previous work done by Marc Ebner\cite{Ebner} states that before his work on evolving artificial plants in a single population, the usual setting for the Red Queen Effect was a predator population versus a prey population\cite{Ebner}\cite{Red}. Ebner states that ecological interactions are an important part evolution. In Ebner's plant ecosystem, it was common to see a fluctuating fitness around a constant level that sometimes even decreased.
 
 For our experiment, we would like to drop the distinction of predator and prey from the individuals. Instead we would like to look at the strategies of an individual and whether those strategies are effected by the Red Queen Effect. Our creatures who are fighting will only be distinguished by their strategy. This strategy will be developed by the differences in their fitness function. Therefore during evaluation we will compare two individuals at a time. Our engine will allow us to compare any two individuals we want with no bias going to either side.
 
 What we would like to see is the Red Queen Effect disappear from our project because of our method of training and testing. Our project will go through a set number of rounds. A normal round will have a single population evaluating against other members of that same population. Every 10 rounds however we will evaluate a population against another. This will hopefully change the strategy of both populations and help them improve their fitnesses by keeping their opponents inconsistent. This method is similar to that of \textit{evolution control}\cite{Fitness}.
 
-Evolution control deals with evaluating with both an original fitness function and an approximate function. One of its methods is to have control individuals who use the original fitness function. While evaluating, the approximate function is used except for at a set interval where the control or original function is used to produce control individuals. In our case our original fitness functions is to compare fitness functions and have individuals from two differing populations compete. %(* %*)
+Evolution control deals with evaluating with both an original fitness function and an approximate function. One of its methods is to have control individuals who use the original fitness function. While evaluating, the approximate function is used except for at a set interval where the control or original function is used to produce control individuals. In our case our original fitness functions is to compare fitness functions and have individuals from two differing populations compete.
+
+One thing that we want to do is be able to know what the best is at any given time. This has been looked at before and is called a master tournament\cite{Red}. The master tournament takes the best individuals and saves them at each generation so they can be tested against at the very end. For us we would like to use this idea for a similar purpose. We would like to see optimization happen. That is what our different fitness functions are really for.
 
 While Ebner saw a fluctuating fitness around a constant value in his results\cite{Ebner}, we hypothesize that by keeping opponents inconsistent and varying we can see a small yet steady improvement in one populations best fitness. This best fitness is representative of an individual that has been trained to handle similar strategies to his own, but can still beat differing strategies. A final test will to test this individual against a saved set of best individuals from each round. If the best individual can pass a large majority of the tests (greater than 90\%), our hypothesis will be justified. If it cannot pass our hypothesis will have failed.
 
@@ -139,15 +145,13 @@ Our individuals were made up of common and new behaviours that we needed to mode
 	\end{itemize}
 \item Terminals
 	\begin{itemize}
-	\item Move - When called during evaluation, moves the correct players x position by cos(this->direction)*speed + 0.5 where the direction is where the player is facing. Also moves the correct players y position by sin(this->direction)*speed + 0.5.
+	\item Move - When called during evaluation, moves the correct players x position by cos(this->direction)* speed + 0.5 where the direction is where the player is facing. Also moves the correct players y position by sin(this->direction)*speed + 0.5.
 	\item Turn Left - When called during evaluation, computes this->direction += BASE\_ANGLE which changes the direction the player is facing.
 	\item Turn Right - When called during evaluation, computes this->direction -= BASE\_ANGLE which changes the direction the player is facing.
 	\item Aim - When called during evaluation, computes the angle to turn by using the current position of both players and the arc-tangent. In other words, we set the angle to turn to be atan( (y2-y1)/(x2-x1) ).
 	\item Shoot - When called during evaluation, adds a new bullet to the environment list containing environment variables.
 	\end{itemize}
 \end{itemize}
-
-\subsection{Genetic Program} % GP
 
 \begin{table*}
 \centering
@@ -184,10 +188,9 @@ Fitness function 4 & MaxMin; The goal of this training fitness was to maximize t
 \end{tabular}
 \end{table*}
 
-\subsection{Selection}
 \subsection{Elitism}
 To maintain the best players across generations, we decided to create an elite for each generation. This elite was pitted against every other player in the population to ensure that it was indeed the best player. Each elite was chosen based on the training fitness assigned to that specific search, see Table \ref{evochar}. This particular area of our program was where most of the time was spent. We had to check each player against every other player which added up computational power quickly. Once we had gathered all the fitness, we averaged it out and returned the better player The following is pseudo code for our get elite function:
-\begin{verbatim}
+\begin{lstlisting}
   Player *one;
   Player *two;
   for(int i = 0; i < POP_SIZE - 1; i++){
@@ -208,11 +211,11 @@ To maintain the best players across generations, we decided to create an elite f
     }
   }
   return pop->GetIndividual(winningIndex);
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Tournament Select}
 The tournament select function grabbed two random players. Then, it evaluated the two players against each other. We specifically made it so that the players could not be the same player. The tournament select then compared their fitness (based on the training fitness used for that specific genetic program), and selected whichever one was better. The following is pseudo code for our tournament select function:
-\begin{verbatim}
+\begin{lstlisting}
   int oneIndex = rand()%POP_SIZE;
   int twoIndex = rand()%POP_SIZE;
 
@@ -228,15 +231,15 @@ The tournament select function grabbed two random players. Then, it evaluated th
   }
 
   return oneIndex;
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Crossover}
 The crossover function took the two winners of the above tournament select and crossed over at a random number, see Table \ref{evochar}. This algorithm performed a depth-first traversal through the player tree. Once it arrived at the random node, it crossed over with the second player. The actual crossover algorithm required a deep copy of the subtree to be made and then attached. We used a temporary tree to hold that subtree and then attached it by setting the parent node equal to the tmpParent's node. Here is some pseudo code to explain this:
-\begin{verbatim}
+\begin{lstlisting}
   node *tmpNode = firstNode->copyTree(firstNode, firstNode->parent);
   firstNode = firstNode->copyTree(secondNode, firstNode->parent);
   secondNode = secondNode->copyTree(tmpNode, secondNode->parent);
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Mutation}
 The mutation function traversed the player tree in a depth-first traversal. At every node, a random number between 1 and 100 was generated. If the number was less than 10, the current node was mutated. To make sure that the node didn't change types (terminal to non-terminal and visa versa), if the node was a terminal a random terminal node was generated. Because we only had two non-terminals in our set, see Table \ref{evochar}, we just switched prog3 over to prog2 and visa versa.
@@ -249,7 +252,7 @@ The evaluate function was the meat of our genetic program. It took in two separa
 To keep the fitnesses simple we decided to keep track the number of times an individual hit the opponent and the number of times that an opponent hit the individual. These were the numbers that our fitness functions would try to control. For example we might want to try and maximize the number of successful hits of the opponent and maximize the number of times the opponent hits the individual. In theory this doesn't sound like that great of a strategy but maybe against some other fitness function it would be great.
 
 When we would like to compare the different functions however we needed some way to standardize these fitnesses. We came up with what we viewed as a perfect fitness and created a normalizing function to use the two prior values to represent it. Therefore our fitness functions are really controlling methods and strategies for getting the highest normalized fitness. The following is pseudo code for our normalization function:
-\begin{verbatim}
+\begin{lstlisting}
     if(this->numSuccess == this->numFail)
     {
         this->fitness = 1;
@@ -261,7 +264,7 @@ When we would like to compare the different functions however we needed some way
         }
         this->fitness = numSuccess/numFail;
     }
-\end{verbatim}
+\end{lstlisting}
 Because we decided to use a division of Success/Failures, we had to account for 0 in the denominator. Therefore if the Successes=Failures we just set our "stalemate" value or "average" outcome at 1. Therefore anything over 1 is assumed to be above average during the division. If the denominator is 0 and the numerator is not, we take this as an exceptionally good individual and wish to divide by 0.01 which essentially multiplies our answer by 100.
 
 \subsubsection{Fitness Functions}
@@ -302,7 +305,7 @@ PICTURES
 
 \section{Conclusions} % Conclusions
 
-WE DO GOOD
+WHAT WE FOUND OUT
 
 %
 % The following two commands are all you need in the
