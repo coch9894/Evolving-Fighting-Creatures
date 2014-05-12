@@ -100,9 +100,9 @@ Jordan Leithart\\
 \maketitle
 \begin{abstract}
 
-An essential part of any genetic program is the use of a well defined fitness function that produces the desired outputs. For competitive coevolution this does not change. However, the ability to view the affects of different fitness functions on two simultaneously evolving populations can be seen through competition. Through competition, the value of a good fitness function will become apparent from the winner of the competition. We propose that it is possible to see the affects of different fitness functions through control of an individuals fitness which then can be normalized to compare to other individuals fitnesses in the population. We would like to see if logical fitness functions are always the best at producing good results and if training and testing have any affect on the appearance of the red queen effect.
+An essential part of any genetic program is the use of a well defined fitness function that produces the desired outputs. For competitive coevolution this does not change. However, the ability to view the affects of different fitness functions on two simultaneously evolving populations can be seen through competition. Through competition, the value of a good fitness function will become apparent from the winner of the competition. We propose that it is possible to see the affects of different fitness functions through control of an individuals fitness which then can be normalized to compare to other individuals fitnesses in the population. We would like to see if logical fitness functions are always the best at producing good results and if training and testing have any affect on the appearance of the Red Queen Effect.
 
-RESULTS
+Through experimentation using a genetic program, we were able to observe that logical fitness functions do perform better, but not to the degrees that we would have expected. Similarly, only similar strategies seemed to be affected by the Red Queen Effect namely, attempting to maximize hits on the opponent. Fitness functions were also very reliant on their opponent, which caused random behavior to exhibit through the ability of poor fitness functions to occasionally be successful and win against a logical fitness function.
 
 \end{abstract}
 
@@ -136,7 +136,7 @@ While Ebner saw a fluctuating fitness around a constant value in his results\cit
 The simplest way to test our hypothesis was to build a genetic program that could be used in conjuncture with a graphics engine so our end results could be shown and quantified. To do so we built a genetic program that would evolve the instructions for an individual. To evaluate these individuals with different fitness functions it seemed best to use the idea of training two populations on separate fitness functions and then testing them against each other at regular intervals to get a grasp on the validity of each fitness function. After each generation, the best individual from \textit{either} population was saved into a separate population as a control group. When evolution ended, the best individual was tested against this control group to check for the Red Queen Effect. This allowed us to observe if we were creating a overall best solution or if we were cycling through a few strategies.
 
 \subsection{Individuals} % What makes an individual
-Our individuals were made up of common and new behaviours that we needed to model our creatures. The following list of Non-Terminals and Terminals is all we used to make up our individual. Evolution was the key to setting them in the correct order and will be covered in the next section.
+Our individuals were made up of common and new behaviors that we needed to model our creatures. The following list of Non-Terminals and Terminals is all we used to make up our individual. Evolution was the key to setting them in the correct order and will be covered in the next section.
 \begin{itemize}
 \item Non-Terminals
 	\begin{itemize}
@@ -277,35 +277,95 @@ When training or testing to obtain fitness, it is unknown which side of the boar
 
 \section{Results} % Results
 
-PICTURES
+Due to time constraints, we observed only MaxMax vs the rest of the fitness functions, see Table \ref {evochar}, this was an excellent choice because we expected that MaxMax would be second best. We observed that it was in actuality the best fitness function. We discovered this was due to MaxMax always being on the left hand side of the board, and in our evaluation function the left side won all ties. This was especially prevalent in the results between MaxMax vs. MaxMin, see subsection \ref{MAXMAXvMAXMIN}.
 
-\subsection{Fitness Function 1 VS. Fitness Function 2}
+\subsection{MAXMAX VS. MINMAX}
+\label{MAXMAXvMINMAX}
+We expected that MaxMax would dominate this matchup, winning every single competition. However, this was not observed fully. We did see a dominant player in MaxMax, see Figure \ref{fig:MaxMaxMinMax}, which won 90\% of the matchups. We believe that the MinMax player evolved a strategy halfway through that moved and shot and the MaxMax player evolved a stand and shoot strategy.
+\begin{figure}[h]
+\centering
+\caption{MaxMax vs. MinMax}
+\label{fig:MaxMaxMinMax}
+\includegraphics[width=0.5\textwidth]{MaxMaxvMinMax}
+\end{figure}
 
-PICTURES
+\subsection{MAXMAX VS. MINMIN}
+\label{MAXMAXvMINMIN}
+Similar to subsection \ref{MAXMAXvMINMAX} we expected that MaxMax would dominate this matchup as well. We also expected it to win every single competition. Again, this was not observed fully, with MaxMax actually performing worse and MinMin winning 20\% of the matchups. This was a shocking revelation because we didn't expect MinMin to evolve a shooting function at all, so we must assume that in those particular generations every individual in MinMin had evolved a shooting function, and in the same generation MaxMax had devolved from a stand and shoot behavior that we were expecting. However, once we had evolved to our maximum generations, we noticed that MaxMax had re-evolved a stand and shoot fighting strategy, see Figure \ref{fig:pic2}.
+\begin{figure}[h]
+\centering
+\caption{MaxMax vs. MinMin}
+\label{fig:MaxMaxMinMin}
+\includegraphics[width=0.5\textwidth]{MaxMaxvMinMin}
+\end{figure}
 
-\subsection{Fitness Function 2 VS. Fitness Function 3}
-
-PICTURES
-
-\subsection{Fitness Function 3 VS. Fitness Function 4}
-
-PICTURES
-
-\subsection{Fitness Function 1 VS. Fitness Function 3}
-
-PICTURES
-
-\subsection{Fitness Function 1 VS. Fitness Function 4}
-
-PICTURES
-
-\subsection{Fitness Function 2 VS. Fitness Function 4}
-
-PICTURES
+\subsection{MAXMAX VS. MAXMIN}
+\label{MAXMAXvMAXMIN}
+Based off the fitness functions in Table \ref{evochar}, and since the normalized fitness function was the fitness function that MaxMin was training on, we expected that MaxMin would win this matchup, but not necessarily dominate. In this matchup, we expected to see more of a Red Queen Effect due to similarities in trying to maximize hits on the opponent. What we observed was that the two players tied a few times, with the tie going to MaxMax due to it being on the left, otherwise they were evenly matched with MaxMax holding a slight edge, assumed due to the ties. We also observed periods of behavior where one player would win several generations in a row before the other player solved that strategy.
+\begin{figure}[h]
+\centering
+\caption{MaxMax vs. MaxMin}
+\label{fig:MaxMaxMaxMin}
+\includegraphics[width=0.5\textwidth]{MaxMaxvMaxMin}
+\end{figure}
 
 \section{Conclusions} % Conclusions
 
-WHAT WE FOUND OUT
+First off, our hypothesis that we would be able to see a small, steady improvement in a populations best individual was not true. We observed that some seemingly random behaviors no matter what generation we were on. We believe that this is due to having no conditionals in our non-terminal set. Without these conditionals code bloat did not occur so every sub-tree was acted upon. If we were to perform this experiment again we would add a conditional to the non-terminal set such as, if\_recently\_shot or if\_opponent\_hit. We believe this would allow for inoperable code to be hidden and therefore crossover and mutation would not have such drastic affects each generation.
+
+Secondly, while we did not have a master tournament\cite{Red} at the end of our competitions, we attempted a red robin tournament that had similar effects. During this tournament we observed the Red Queen Effect as seen in Table 2. %\ref{tMAXMAXvMAXMIN}
+In the table you can clearly see winner rotation with nearly a 50\% split. This also means that our hypothesis that the red queen effect would not be present if training and testing were done separately is wrong. However, we were able to show that fitness function MaxMax had no Red Queen Effect when evaluated against any fitness function except MaxMin. Therefore we conclude that only similar strategies are effected by the Red Queen Effect in this type of tournament.
+
+Lastly, we ran into a problem were our program slowed down significantly as we continued to search across the landscape. We observed that in the 4th search, MinMin vs MinMax, it took 12 hours to finish 30 generations. If we had more time, we would combat this by gathering the data for each search individually, instead of all at once. This setback caused us to have to extrapolate data across our round robin style tournament. We feel we can safely assume that MaxMin would perform similarly to MaxMax when evaluating against all the other fitness functions, because of ties and how only similar strategies seem to be affected by the Red Queen Effect.
+
+\begin{table}[h]
+\centering
+\label{tMAXMAXvMAXMIN}
+\caption{MaxMax vs. MaxMin}
+\begin{tabular}{|l|p{1in}|}
+\hline
+\textbf{MaxMin} & 11.5 \\
+\hline
+\textit{MaxMax} & 0 \\
+\hline
+\textit{MaxMax} & 1 \\
+\hline
+\textit{MaxMax} & 900 \\
+\hline
+\textit{MaxMax} & 3200 \\
+\hline
+\textbf{MaxMin} & 1.92391 \\
+\hline
+\textit{MaxMax} & 1 \\
+\hline
+\textit{MaxMax} & 2600 \\
+\hline
+\textbf{MaxMin} & 1 \\
+\hline
+\textit{MaxMax} & 0.333333 \\
+\hline
+\textbf{MaxMin} & 0.974684 \\
+\hline
+\textbf{MaxMin} & 2600 \\
+\hline
+\textbf{MaxMin} & 3.5 \\
+\hline
+\textbf{MaxMin} & 1.22222 \\
+\hline
+\textbf{MaxMin} & 0.495575 \\
+\hline
+\textit{MaxMax} & 2.0625 \\
+\hline
+\textit{MaxMax} & 2100 \\
+\hline
+\textbf{MaxMin} & 1.35294 \\
+\hline
+\textit{MaxMax} & 1.11111\\
+\hline
+\textit{MaxMax} & 1.1 \\
+\hline
+\end{tabular}
+\end{table}
 
 %
 % The following two commands are all you need in the
@@ -323,13 +383,29 @@ WHAT WE FOUND OUT
 %APPENDICES are optional
 %\balancecolumns
 
-
+%ACKNOWLEDGMENTS are optional
+\section{Acknowledgements}
+We would like to especially thank Dr. Terrence Soule for his help and guidance during this project. His help in finding resources was invaluable. We would also like to thank Jordan's CPU for never dying during its 72 hour marathon to gather our relevant data.
 
 \appendix
 %Appendix A
 \section{Graphics}
 
-Lets show a run every ten rounds?
+\paragraph{} Here are a few screenshots of the first two searches in action. Figure \ref{fig:pic} shows the MaxMax in action versus the MinMax. Refer to Table \ref{evochar} to see what type of functions are being used. Figure \ref{fig:pic2} shows a similar scene, but between MaxMax and MinMin.
+
+\begin{figure}[H]
+\centering
+\caption{MaxMax(L) vs. MinMax(R): Generation 25}
+\label{fig:pic}
+\includegraphics[width=0.5\textwidth]{MaxMax(L)vMinMax(R)g-25}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\caption{MaxMax(L) vs. MinMin(R): Generation 95}
+\label{fig:pic2}
+\includegraphics[width=0.5\textwidth]{MaxMax(L)vMinMin(R)g-95}
+\end{figure}
 
 %\balancecolumns
 % That's all folks!
